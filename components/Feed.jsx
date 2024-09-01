@@ -1,6 +1,6 @@
 const Feed = () => {
   return (
-    <section className="flex py-2 md:py-4 px-4 md:px-8 w-full items-center justify-center">
+    <section className="flex py-2 md:py-4 px-4 md:px-8 w-full items-start min-h-screen">
       <div className="flex flex-col items-center justify-center gap-8 w-full">
         <input
           type="text"

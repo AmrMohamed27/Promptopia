@@ -10,7 +10,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>
+      <body className="relative">
         <AuthProvider>
           <div className="main">
             <div className="gradient"></div>
@@ -18,8 +18,8 @@ export default function RootLayout({ children }) {
           <main className="app">
             <Navbar />
             {children}
-            <Footer />
           </main>
+          <Footer />
         </AuthProvider>
       </body>
     </html>

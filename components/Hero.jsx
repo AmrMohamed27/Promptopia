@@ -1,8 +1,8 @@
 const Hero = () => {
   return (
-    <section className="flex py-8 md:py-16 px-4 md:px-8 w-full items-center justify-center">
+    <section className="flex py-8 md:py-16 px-4 md:px-8 w-full items-start">
       <div className="flex flex-col items-center justify-center gap-8">
-        <h1 className="text-4xl sm:text-4xl md:text-6xl font-extrabold text-center text-pale-blue">
+        <h1 className="text-4xl md:text-6xl font-extrabold text-center text-pale-blue">
           Discover & Share <br />
           <span className="orange_gradient">AI Powered Prompts</span>
         </h1>

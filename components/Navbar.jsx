@@ -27,7 +27,7 @@ const Navbar = () => {
     })();
   }, []);
   return (
-    <header className="py-4 px-8 w-full">
+    <header className="py-4 px-0 sm:px-8 w-full">
       <div className="flex flex-row items-center justify-between w-full">
         <Link href="/" className="flex flex-row items-center gap-2">
           <Image
@@ -41,7 +41,7 @@ const Navbar = () => {
         {/* PC Nav */}
         {status === "authenticated" ? (
           <div className="hidden md:flex flex-row gap-4 items-center">
-            <Button href="/create">Create a Prompt</Button>
+            <Button href="/posts/create">Create a Post</Button>
             <Button onClick={signOut} white>
               Sign Out
             </Button>
