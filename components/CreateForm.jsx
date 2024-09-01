@@ -4,12 +4,12 @@ import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 
-const CreateForm = () => {
+const CreateForm = ({ initialPrompt, initialTagsString, postId, isEdit }) => {
   const router = useRouter();
   const { data: session } = useSession();
 
-  const [prompt, setPrompt] = useState("");
-  const [tagsString, setTagsString] = useState("");
+  const [prompt, setPrompt] = useState(initialPrompt || "");
+  const [tagsString, setTagsString] = useState(initialTagsString || "");
   const successRef = useRef();
 
   const handlePromptChange = (e) => {
@@ -29,30 +29,38 @@ const CreateForm = () => {
   const handleCreate = async (e) => {
     e.preventDefault();
     const tags = tagsString.split(", ");
-
     try {
       const body = JSON.stringify({
         prompt: prompt,
         tags: tags,
         userId: session?.user.id,
       });
-      const response = await fetch("/api/posts/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: body,
-      });
-
-      const data = await response.json();
-
+      let response;
+      if (!isEdit) {
+        response = await fetch("/api/posts/create", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: body,
+        });
+      } else {
+        response = await fetch(`/api/posts/edit/${postId}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: body,
+        });
+      }
       if (response.ok) {
         router.push("/");
       } else {
         throw new Error(data.error || "Something went wrong");
       }
     } catch (error) {
-      successRef.current.textContent = "Error creating post: " + error.message;
+      successRef.current.textContent =
+        "Error creating or editing post: " + error.message;
       successRef.current.style.color = "#FF0000";
     }
   };
@@ -96,7 +104,7 @@ const CreateForm = () => {
             className="bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-full py-2 px-6 hover:cursor-pointer text-sm flex items-center justify-center"
             onClick={handleCreate}
           >
-            Create
+            {isEdit ? "Edit" : "Create"}
           </button>
           <button
             className="bg-gradient-to-r from-orange-600 to-amber-600 text-white rounded-full py-2 px-6 hover:cursor-pointer text-sm flex items-center justify-center"

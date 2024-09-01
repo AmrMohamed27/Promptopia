@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const Footer = () => {
   return (
-    <div className="py-4 px-4 md:px-8 w-full absolute bottom-0 left-0 border-t-2 border-pale-blue/20 flex flex-row items-center justify-between">
+    <div className="py-4 px-4 md:px-8 border-t-2 border-pale-blue/20 flex flex-row items-center justify-between w-[calc(100vw-1rem)]">
       <div className="flex flex-col items-start justify-center">
         <p className="text-lg md:text-xl text-pale-blue ">
           &copy; Promptopia <span className="">{new Date().getFullYear()}</span>
