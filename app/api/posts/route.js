@@ -1,6 +1,7 @@
 import { dbConnect } from "@utils/database";
 import Post from "@models/post";
 
+export const dynamic = "force-dynamic";
 export const GET = async (req) => {
   try {
     await dbConnect();
