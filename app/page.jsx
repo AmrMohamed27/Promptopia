@@ -5,7 +5,9 @@ const Home = () => {
   return (
     <>
       <Hero />
-      <Feed />
+      <section className="flex flex-col py-2 md:py-4 w-full min-h-screen mb-16 gap-16">
+        <Feed showSearch={true} />
+      </section>
     </>
   );
 };

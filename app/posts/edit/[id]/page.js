@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import CreateForm from "@components/CreateForm";
+import Image from "next/image";
 
 const Page = ({ params }) => {
   const id = params.id;
@@ -37,12 +38,19 @@ const Page = ({ params }) => {
         {post ? (
           <CreateForm
             initialPrompt={post.prompt}
-            initialTagsString={post.tags.join("")}
+            initialTagsString={post.tags.join(", ")}
             isEdit
             postId={id}
           />
         ) : (
-          <p>Loading...</p>
+          <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-75 backdrop-blur-sm z-50">
+            <Image
+              src="/assets/icons/LoadingIcon.svg"
+              alt="Loading..."
+              width={100}
+              height={100}
+            />
+          </div>
         )}
       </div>
     </section>
