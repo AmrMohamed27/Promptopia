@@ -103,8 +103,8 @@ export default function Feed({ userEmail }) {
         {/* Loading Indicator */}
         {loading && <LoadingCircle />}
         {/* Prompts List */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-start w-full ">
-          {posts.slice(feedPage * 6, feedPage * 6 + 6).map((post) => (
+        <div className="flex flex-row flex-wrap justify-between gap-8 items-start w-full ">
+          {posts.slice(feedPage * 6, feedPage * 6 + 6).map((post, index) => (
             <PromptCard
               key={post._id}
               post={post}
@@ -112,6 +112,7 @@ export default function Feed({ userEmail }) {
               setPosts={setPosts}
               feedPage={feedPage}
               setFeedPage={setFeedPage}
+              index={index}
             />
           ))}
         </div>

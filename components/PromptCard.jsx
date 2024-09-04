@@ -8,7 +8,14 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
 
-const PromptCard = ({ post, feedPage, setFeedPage, posts, setPosts }) => {
+const PromptCard = ({
+  post,
+  feedPage,
+  setFeedPage,
+  posts,
+  setPosts,
+  index,
+}) => {
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
   const [postToDelete, setPostToDelete] = useState(null);
@@ -57,7 +64,7 @@ const PromptCard = ({ post, feedPage, setFeedPage, posts, setPosts }) => {
   };
   return (
     <div
-      className="flex flex-col border-2 border-black/10 rounded-lg p-4 gap-4 shadow-lg shadow-transparent hover:shadow-primary-orange/20 hover:border-primary-orange/35 transition-all duration-500"
+      className={`${post.prompt.length > 300 ? "basis-full flex-grow" : "flex-grow basis-1/4"} max-md:w-full flex flex-col border-2 border-black/10 rounded-lg p-4 gap-4 shadow-lg shadow-transparent hover:shadow-primary-orange/20 hover:border-primary-orange/35 transition-all duration-500`}
       key={post._id}
     >
       <div className="flex justify-start flex-row gap-4 flex-nowrap lg:flex-wrap xl:flex-nowrap">
@@ -96,7 +103,7 @@ const PromptCard = ({ post, feedPage, setFeedPage, posts, setPosts }) => {
 
       <div className="flex items-center justify-start mt-2">
         <p
-          className={`${post.prompt.length > 300 ? "text-sm" : "text-lg"} text-pale-blue`}
+          className={`${post.prompt.length > 300 ? "text-base" : "text-lg"} text-pale-blue`}
         >
           {post.prompt}
         </p>

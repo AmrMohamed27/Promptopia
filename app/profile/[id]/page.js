@@ -62,7 +62,7 @@ const Page = ({ params }) => {
           </div>
           <div className="flex py-2 md:py-4 flex-col gap-8 md:-mt-12">
             <h2 className="text-2xl md:text-3xl text-pale-blue font-bold text-center">
-              Your Prompts:
+              {user.username}&apos;s Prompts:
             </h2>
             {user.email && <Feed userEmail={user.email} />}
           </div>
