@@ -7,7 +7,7 @@ const Hero = () => {
           <span className="orange_gradient">AI Powered Prompts</span>
         </h1>
         <p className="text-center text-lg md:text-xl text-pale-blue md:max-w-[65%]">
-          Promptopia is an open-source prompting tool for modern world to
+          Promptopia is an open-source prompting tool for the modern world to
           discover, create and share creative prompts
         </p>
       </div>

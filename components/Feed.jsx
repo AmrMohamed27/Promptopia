@@ -18,7 +18,8 @@ export default function Feed({ userEmail }) {
         if (!res.ok) {
           throw new Error("Network response was not ok");
         }
-        const data = await res.json();
+        const originalData = await res.json();
+        const data = originalData.reverse();
         if (!userEmail) {
           setPosts(data);
           setFetchedPosts(data);
@@ -102,7 +103,7 @@ export default function Feed({ userEmail }) {
         {/* Loading Indicator */}
         {loading && <LoadingCircle />}
         {/* Prompts List */}
-        <div className="flex flex-row flex-wrap justify-center lg:justify-between gap-8 items-center lg:items-start w-full ">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-start w-full ">
           {posts.slice(feedPage * 6, feedPage * 6 + 6).map((post) => (
             <PromptCard
               key={post._id}
