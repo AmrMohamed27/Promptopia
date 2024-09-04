@@ -102,7 +102,7 @@ export default function Feed({ userEmail }) {
         {/* Loading Indicator */}
         {loading && <LoadingCircle />}
         {/* Prompts List */}
-        <div className="flex flex-row flex-wrap justify-center lg:justify-between gap-8 items-center lg:items-start w-full lg:w-auto">
+        <div className="flex flex-row flex-wrap justify-center lg:justify-between gap-8 items-center lg:items-start w-full ">
           {posts.slice(feedPage * 6, feedPage * 6 + 6).map((post) => (
             <PromptCard
               key={post._id}
