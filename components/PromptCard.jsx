@@ -6,6 +6,7 @@ import { MdOutlineEdit as EditIcon } from "react-icons/md";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import Link from "next/link";
 
 const PromptCard = ({ post, feedPage, setFeedPage, posts, setPosts }) => {
   const router = useRouter();
@@ -56,11 +57,14 @@ const PromptCard = ({ post, feedPage, setFeedPage, posts, setPosts }) => {
   };
   return (
     <div
-      className="flex flex-col border-2 border-black/10 rounded-lg p-4 gap-4 flex-1 shadow-lg shadow-transparent hover:shadow-primary-orange/20 hover:border-primary-orange/35"
+      className="flex flex-col max-md:w-full border-2 border-black/10 rounded-lg p-4 gap-4 md:flex-1 shadow-lg shadow-transparent hover:shadow-primary-orange/20 hover:border-primary-orange/35 transition-all duration-500"
       key={post._id}
     >
-      <div className="flex justify-start flex-row gap-4">
-        <div className="flex items-center justify-center">
+      <div className="flex justify-start flex-row gap-4 flex-nowrap lg:flex-wrap xl:flex-nowrap">
+        <Link
+          href={`/profile/${post.creator?._id}`}
+          className="flex items-center justify-center"
+        >
           <Image
             src={post.creator?.image}
             alt={post.creator?.username || "Unknown User"}
@@ -68,11 +72,14 @@ const PromptCard = ({ post, feedPage, setFeedPage, posts, setPosts }) => {
             height={60}
             className="rounded-full"
           />
-        </div>
+        </Link>
         <div className="flex flex-col flex-wrap w-full">
-          <p className="text-lg font-bold capitalize text-pretty">
+          <Link
+            href={`/profile/${post.creator?._id}`}
+            className="text-lg font-bold capitalize text-pretty"
+          >
             {post.creator?.username || "Anonymous"}
-          </p>
+          </Link>
           <div className="relative group">
             <p
               className="text-md text-black/60 italic underline cursor-pointer"

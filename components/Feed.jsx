@@ -1,60 +1,73 @@
 "use client";
 
-import { useEffect, useCallback, useState } from "react";
-import Image from "next/image";
+import { useEffect, useState } from "react";
 import PromptCard from "./PromptCard";
+import LoadingCircle from "./LoadingCircle";
 
-export default function Feed({ showSearch, userEmail }) {
+export default function Feed({ userEmail }) {
   const [posts, setPosts] = useState([]);
-
+  const [fetchedPosts, setFetchedPosts] = useState([]);
   const [feedPage, setFeedPage] = useState(0);
   const [searchValue, setSearchValue] = useState("");
   const [loading, setLoading] = useState(true);
 
-  const fetchPosts = useCallback(async () => {
-    try {
-      const res = await fetch("/api/posts");
-      if (!res.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const data = await res.json();
-      if (userEmail === undefined) {
-        setPosts(data);
-      } else {
-        setPosts(data.filter((post) => post.creator?.email === userEmail));
-      }
-    } catch (error) {
-      console.error("Error fetching posts:", error);
-    } finally {
-      setLoading(false); // Set loading to false when fetch is complete
-    }
-  }, [userEmail]);
   useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const res = await fetch("/api/posts");
+        if (!res.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await res.json();
+        if (!userEmail) {
+          setPosts(data);
+          setFetchedPosts(data);
+        } else {
+          setPosts(data.filter((post) => post.creator?.email === userEmail));
+          setFetchedPosts(
+            data.filter((post) => post.creator?.email === userEmail)
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+      } finally {
+        setLoading(false); // Set loading to false when fetch is complete
+      }
+    };
     fetchPosts();
-  }, [fetchPosts]);
+  }, [userEmail]);
 
   const handleSearchValueChange = (e) => {
     setSearchValue(e.target.value);
   };
 
-  const handleSearch = (text) => {
+  const handleReset = (e) => {
+    e.preventDefault();
+    setSearchValue("");
+    setPosts(fetchedPosts);
+  };
+
+  const handleSearch = async (text) => {
     if (text.charAt(0) === "#") {
       setPosts(
-        posts.filter((post) =>
-          post.tags.some((tag) => tag.toLowerCase() === text.toLowerCase())
+        fetchedPosts.filter((post) =>
+          post.tags.some((tag) =>
+            tag.toLowerCase().includes(text.toLowerCase())
+          )
         )
       );
     } else if (text.charAt(0) === "@") {
       setPosts(
-        posts.filter(
-          (post) =>
-            post.creator?.email.toLowerCase() === text.slice(1).toLowerCase()
+        fetchedPosts.filter((post) =>
+          post.creator?.username
+            .toLowerCase()
+            .includes(text.slice(1).toLowerCase())
         )
       );
     } else if (text === "") {
-      fetchPosts();
+      setPosts(fetchedPosts);
     } else {
-      setPosts(posts.filter((post) => post.prompt.includes(text)));
+      setPosts(fetchedPosts.filter((post) => post.prompt.includes(text)));
     }
     setFeedPage(0);
   };
@@ -62,34 +75,32 @@ export default function Feed({ showSearch, userEmail }) {
     <>
       <div className="gap-24 flex flex-col items-start w-full mt-4">
         {/* Search Bar */}
-        {showSearch && (
-          <div className="flex flex-col md:flex-row items-center justify-center gap-8 w-full px-4 md:px-8">
-            <input
-              type="text"
-              placeholder="Search for a #tag, @email or prompt"
-              className="w-full px-4 py-2 rounded-lg lg:max-w-[75%] shadow-lg shadow-black/10 outline-none"
-              value={searchValue}
-              onChange={handleSearchValueChange}
-            />
+
+        <div className="flex flex-col md:flex-row items-center justify-center gap-8 w-full px-4 md:px-8">
+          <input
+            type="text"
+            placeholder="Search for a #tag, @username or prompt"
+            className="w-full px-4 py-2 rounded-lg lg:max-w-[75%] shadow-lg shadow-black/10 outline-none"
+            value={searchValue}
+            onChange={handleSearchValueChange}
+          />
+          <div className="flex flex-row gap-4 items-center">
             <button
               className="bg-gradient-to-r from-orange-600 to-amber-600 text-white rounded-lg py-2 px-6 hover:cursor-pointer text-sm flex items-center justify-center"
               onClick={() => handleSearch(searchValue)}
             >
               Search
             </button>
+            <button
+              className="bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-lg py-2 px-6 hover:cursor-pointer text-sm flex items-center justify-center"
+              onClick={handleReset}
+            >
+              Reset
+            </button>
           </div>
-        )}
+        </div>
         {/* Loading Indicator */}
-        {loading && (
-          <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-75 backdrop-blur-sm z-50">
-            <Image
-              src="/assets/icons/LoadingIcon.svg"
-              alt="Loading..."
-              width={100}
-              height={100}
-            />
-          </div>
-        )}
+        {loading && <LoadingCircle />}
         {/* Prompts List */}
         <div className="flex flex-row flex-wrap justify-center lg:justify-between gap-8 items-center lg:items-start w-full lg:w-auto">
           {posts.slice(feedPage * 6, feedPage * 6 + 6).map((post) => (

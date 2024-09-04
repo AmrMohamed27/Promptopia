@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import CreateForm from "@components/CreateForm";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
+import LoadingCircle from "@components/LoadingCircle";
 
 const Page = ({ params }) => {
   const { data: session } = useSession();
@@ -50,14 +51,7 @@ const Page = ({ params }) => {
               postId={id}
             />
           ) : (
-            <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-75 backdrop-blur-sm z-50">
-              <Image
-                src="/assets/icons/LoadingIcon.svg"
-                alt="Loading..."
-                width={100}
-                height={100}
-              />
-            </div>
+            <LoadingCircle />
           )}
         </div>
       )}

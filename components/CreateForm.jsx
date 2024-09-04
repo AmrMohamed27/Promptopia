@@ -26,6 +26,11 @@ const CreateForm = ({ initialPrompt, initialTagsString, postId, isEdit }) => {
     setTagsString("");
   };
 
+  const handleCancel = (e) => {
+    e.preventDefault();
+    router.push("/");
+  };
+
   const handleCreate = async (e) => {
     e.preventDefault();
     const tags = tagsString.split(", ");
@@ -111,6 +116,12 @@ const CreateForm = ({ initialPrompt, initialTagsString, postId, isEdit }) => {
             onClick={handleClear}
           >
             Clear
+          </button>
+          <button
+            className="bg-gradient-to-r from-orange-600 to-amber-600 text-white rounded-full py-2 px-6 hover:cursor-pointer text-sm flex items-center justify-center"
+            onClick={handleCancel}
+          >
+            Cancel
           </button>
         </div>
         <div>

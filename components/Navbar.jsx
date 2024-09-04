@@ -113,7 +113,7 @@ const Navbar = () => {
             >
               <li className="flex flex-col gap-4 items-end">
                 <Link href="/profile">My Profile</Link>
-                <Link href="/create">Create a Prompt</Link>
+                <Link href="/posts/create">Create a Prompt</Link>
               </li>
               <li>
                 <Button onClick={signOut} className={"w-full"}>
