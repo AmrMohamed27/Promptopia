@@ -81,7 +81,7 @@ export default function Feed({ userEmail }) {
           <input
             type="text"
             placeholder="Search for a #tag, @username or prompt"
-            className="w-full px-4 py-2 rounded-lg lg:max-w-[75%] shadow-lg shadow-black/10 outline-none"
+            className="w-full px-4 py-2 rounded-lg lg:max-w-[75%] shadow-lg shadow-black/10 dark:shadow-white/30 outline-none text-black"
             value={searchValue}
             onChange={handleSearchValueChange}
           />
@@ -112,7 +112,6 @@ export default function Feed({ userEmail }) {
               setPosts={setPosts}
               feedPage={feedPage}
               setFeedPage={setFeedPage}
-              index={index}
             />
           ))}
         </div>

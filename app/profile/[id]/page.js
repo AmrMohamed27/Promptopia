@@ -4,11 +4,22 @@ import Image from "next/image";
 import Feed from "@components/Feed";
 import { useEffect, useState } from "react";
 import LoadingCircle from "@components/LoadingCircle";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
-const Page = ({ params }) => {
+const Page = ({ params, myProfile }) => {
+  const router = useRouter();
   const [user, setUser] = useState({});
   const [loading, setLoading] = useState(true);
   const id = params.id;
+  const { data: session } = useSession();
+  const isMyProfile = myProfile || session?.user?.id === id;
+
+  useEffect(() => {
+    if (id === session?.user?.id) {
+      router.push("/profile");
+    }
+  }, [id, router, session]);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -52,7 +63,7 @@ const Page = ({ params }) => {
               />
               <div className="flex flex-col gap-2">
                 <h1 className="text-3xl md:text-4xl font-bold text-blue-600">
-                  {user.username}&apos;s Profile
+                  {isMyProfile ? "Your" : `${user.username}'s`} Profile
                 </h1>
                 <p className="text-lg md:text-xl text-pale-blue">
                   Email: {user.email}
@@ -61,8 +72,8 @@ const Page = ({ params }) => {
             </div>
           </div>
           <div className="flex py-2 md:py-4 flex-col gap-8 md:-mt-12">
-            <h2 className="text-2xl md:text-3xl text-pale-blue font-bold text-center">
-              {user.username}&apos;s Prompts:
+            <h2 className="text-2xl md:text-3xl text-pale-blue dark:text-white font-bold text-center">
+              {isMyProfile ? "Your" : `${user.username}'s`} Prompts:
             </h2>
             {user.email && <Feed userEmail={user.email} />}
           </div>

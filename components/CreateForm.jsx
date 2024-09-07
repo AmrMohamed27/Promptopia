@@ -71,19 +71,19 @@ const CreateForm = ({ initialPrompt, initialTagsString, postId, isEdit }) => {
   };
 
   return (
-    <div className="rounded-xl border-2 border-black/10 px-8 py-8">
+    <div className="rounded-xl border-2 border-black/10 dark:border-white/30 px-8 py-8">
       <form className="flex flex-col gap-8">
         <div className="flex flex-col items-start gap-2">
           <label
             htmlFor="form-textarea"
-            className="font-semibold text-lg text-label-black"
+            className="font-semibold text-lg text-label-black dark:text-white"
           >
             Your Prompt
           </label>
           <textarea
             placeholder="Write your prompt here..."
             id="form-textarea"
-            className="bg-white w-full h-[200px] resize-none px-4 py-2 rounded-lg outline-0 border-2 border-black/10"
+            className="bg-white w-full h-[200px] resize-none px-4 py-2 rounded-lg outline-0 border-2 border-black/10 dark:border-white/30 text-black"
             onChange={handlePromptChange}
             value={prompt}
           ></textarea>
@@ -91,7 +91,7 @@ const CreateForm = ({ initialPrompt, initialTagsString, postId, isEdit }) => {
         <div className="flex flex-col items-start gap-2">
           <label
             htmlFor="form-tag"
-            className="font-semibold text-lg text-label-black"
+            className="font-semibold text-lg text-label-black dark:text-white"
           >
             Tags
           </label>
@@ -99,7 +99,7 @@ const CreateForm = ({ initialPrompt, initialTagsString, postId, isEdit }) => {
             type="text"
             placeholder="#tag, #webdevelopment, #web3"
             id="form-tag"
-            className="bg-white w-full px-4 py-2 rounded-lg outline-0 border-2 border-black/10"
+            className="bg-white w-full px-4 py-2 rounded-lg outline-0 border-2 border-black/10 dark:border-white/30 text-black"
             onChange={handleTagsChange}
             value={tagsString}
           />
@@ -109,7 +109,7 @@ const CreateForm = ({ initialPrompt, initialTagsString, postId, isEdit }) => {
             className="bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-full py-2 px-6 hover:cursor-pointer text-sm flex items-center justify-center"
             onClick={handleCreate}
           >
-            {isEdit ? "Edit" : "Create"}
+            {isEdit ? "Save" : "Create"}
           </button>
           <button
             className="bg-gradient-to-r from-orange-600 to-amber-600 text-white rounded-full py-2 px-6 hover:cursor-pointer text-sm flex items-center justify-center"

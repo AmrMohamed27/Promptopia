@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import CreateForm from "@components/CreateForm";
-import Image from "next/image";
 import { useSession } from "next-auth/react";
 import LoadingCircle from "@components/LoadingCircle";
 

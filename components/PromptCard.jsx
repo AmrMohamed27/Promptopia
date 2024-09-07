@@ -8,14 +8,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
 
-const PromptCard = ({
-  post,
-  feedPage,
-  setFeedPage,
-  posts,
-  setPosts,
-  index,
-}) => {
+const PromptCard = ({ post, feedPage, setFeedPage, posts, setPosts }) => {
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
   const [postToDelete, setPostToDelete] = useState(null);
@@ -64,7 +57,7 @@ const PromptCard = ({
   };
   return (
     <div
-      className={`${post.prompt.length > 300 ? "basis-full flex-grow" : "flex-grow basis-1/4"} max-md:w-full flex flex-col border-2 border-black/10 rounded-lg p-4 gap-4 shadow-lg shadow-transparent hover:shadow-primary-orange/20 hover:border-primary-orange/35 transition-all duration-500`}
+      className={`${post.prompt.length > 300 ? "basis-full flex-grow" : "flex-grow basis-1/4"} max-md:w-full flex flex-col border-2 border-black/10 dark:border-white/30 rounded-lg p-4 gap-4 shadow-lg shadow-transparent hover:shadow-primary-orange/20 hover:border-primary-orange/35 transition-all duration-500`}
       key={post._id}
     >
       <div className="flex justify-start flex-row gap-4 flex-nowrap lg:flex-wrap xl:flex-nowrap">
@@ -89,7 +82,7 @@ const PromptCard = ({
           </Link>
           <div className="relative group">
             <p
-              className="text-md text-black/60 italic underline cursor-pointer"
+              className="text-md text-black/60 dark:text-white/40 italic underline cursor-pointer"
               onClick={() => handleCopy(post.creator?.email)}
             >
               {post.creator?.email || "Anonymous@anon.com"}
@@ -103,7 +96,7 @@ const PromptCard = ({
 
       <div className="flex items-center justify-start mt-2">
         <p
-          className={`${post.prompt.length > 300 ? "text-base" : "text-lg"} text-pale-blue`}
+          className={`${post.prompt.length > 300 ? "text-base" : "text-lg"} text-pale-blue dark:text-white`}
         >
           {post.prompt}
         </p>
@@ -147,9 +140,9 @@ const PromptCard = ({
       </div>
       {showModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50">
-          <div className="bg-white rounded-lg p-8 shadow-lg">
-            <h2 className="text-xl font-bold mb-4">Are you sure?</h2>
-            <p className="text-gray-700 mb-6">
+          <div className="bg-white dark:bg-black border-2 border-transparent dark:border-white rounded-lg p-8 shadow-lg text-black dark:text-white">
+            <h2 className="text-xl font-bold mb-4 ">Are you sure?</h2>
+            <p className="text-gray-700 dark:text-white/60 mb-6">
               Do you really want to delete this post? This action cannot be
               undone.
             </p>
