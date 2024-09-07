@@ -7,9 +7,9 @@ const DarkModeContext = createContext();
 // Create a provider component
 export function DarkModeProvider({ children }) {
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const bodyElement = document.body;
 
   useEffect(() => {
+    const bodyElement = document.body;
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme === "dark") {
       setIsDarkMode(true);
@@ -17,8 +17,8 @@ export function DarkModeProvider({ children }) {
     }
   }, [bodyElement]);
 
-  // Toggle dark mode function
-  const toggleDarkMode = () => {
+  useEffect(() => {
+    const bodyElement = document.body;
     if (isDarkMode) {
       bodyElement.classList.remove("dark");
       localStorage.setItem("theme", "light");
@@ -26,6 +26,10 @@ export function DarkModeProvider({ children }) {
       bodyElement.classList.add("dark");
       localStorage.setItem("theme", "dark");
     }
+  }, [isDarkMode]);
+
+  // Toggle dark mode function
+  const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
   };
 
