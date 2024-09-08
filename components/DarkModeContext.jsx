@@ -15,7 +15,7 @@ export function DarkModeProvider({ children }) {
       setIsDarkMode(true);
       bodyElement.classList.add("dark");
     }
-  }, [bodyElement]);
+  }, []);
 
   useEffect(() => {
     const bodyElement = document.body;
