@@ -13,7 +13,6 @@ const Page = () => {
           </h1>
         ) : (
           <>
-            {" "}
             {/* Heading */}
             <div className="flex flex-col items-start justify-center gap-8">
               <h1 className="text-5xl md:text-6xl blue_gradient font-extrabold">

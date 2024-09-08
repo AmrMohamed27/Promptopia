@@ -12,7 +12,13 @@ import { BiSolidUpvote as SolidUpvoteIcon } from "react-icons/bi";
 import { GoLinkExternal as PostIcon } from "react-icons/go";
 import { useFetchPosts } from "./PostsContext";
 
-const PromptCard = ({ post, feedPage, setFeedPage }) => {
+const PromptCard = ({
+  post,
+  feedPage,
+  setFeedPage,
+  filteredPosts,
+  setFilteredPosts,
+}) => {
   // Variables
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);

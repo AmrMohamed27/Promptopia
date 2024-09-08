@@ -7,31 +7,22 @@ import { useFetchPosts } from "@components/PostsContext";
 export default function Feed({ userEmail }) {
   const [feedPage, setFeedPage] = useState(0);
   const [searchValue, setSearchValue] = useState("");
-  const {
-    posts,
-    setPosts,
-    fetchedPosts,
-    cachedPosts,
-    setFetchedPosts,
-    loading,
-  } = useFetchPosts();
+  const { posts, loading } = useFetchPosts();
+  const [filteredPosts, setFilteredPosts] = useState(posts);
 
   useEffect(() => {
     if (userEmail) {
-      setPosts(cachedPosts.filter((post) => post.creator?.email === userEmail));
-      setFetchedPosts(
-        cachedPosts.filter((post) => post.creator?.email === userEmail)
+      setFilteredPosts(
+        posts.filter((post) => post.creator?.email === userEmail)
       );
     } else {
-      setPosts(cachedPosts);
-      setFetchedPosts(cachedPosts);
+      setFilteredPosts(posts);
     }
     return () => {
-      setPosts(cachedPosts); // Reset posts on component unmount (e.g., navigating away)
+      setFilteredPosts(posts); // Reset posts on component unmount (e.g., navigating away)
       setFeedPage(0); // Reset page to 0 on unmount
     };
-  }, [userEmail, cachedPosts]);
-
+  }, [userEmail, posts, setFilteredPosts]);
 
   const handleSearchValueChange = (e) => {
     setSearchValue(e.target.value);
@@ -40,30 +31,32 @@ export default function Feed({ userEmail }) {
   const handleReset = (e) => {
     e.preventDefault();
     setSearchValue("");
-    setPosts(fetchedPosts);
+    setFilteredPosts(posts);
   };
 
   const handleSearch = async (text) => {
     if (text.charAt(0) === "#") {
-      setPosts(
-        fetchedPosts.filter((post) =>
+      setFilteredPosts((filteredPosts) =>
+        filteredPosts.filter((post) =>
           post.tags.some((tag) =>
             tag.toLowerCase().includes(text.toLowerCase())
           )
         )
       );
     } else if (text.charAt(0) === "@") {
-      setPosts(
-        fetchedPosts.filter((post) =>
+      setFilteredPosts(
+        filteredPosts.filter((post) =>
           post.creator?.username
             .toLowerCase()
             .includes(text.slice(1).toLowerCase())
         )
       );
     } else if (text === "") {
-      setPosts(fetchedPosts);
+      setFilteredPosts(posts);
     } else {
-      setPosts(fetchedPosts.filter((post) => post.prompt.includes(text)));
+      setFilteredPosts((filteredPosts) =>
+        filteredPosts.filter((post) => post.prompt.includes(text))
+      );
     }
     setFeedPage(0);
   };
@@ -99,12 +92,12 @@ export default function Feed({ userEmail }) {
         {loading && <LoadingCircle />}
         {/* Prompts List */}
         <div className="flex flex-row flex-wrap justify-between gap-8 items-start w-full ">
-          {posts.slice(feedPage * 6, feedPage * 6 + 6).map((post, index) => (
+          {filteredPosts.slice(feedPage * 6, feedPage * 6 + 6).map((post) => (
             <PromptCard
               key={post._id}
               post={post}
-              posts={posts}
-              setPosts={setPosts}
+              filteredPosts={filteredPosts}
+              setFilteredPosts={setFilteredPosts}
               feedPage={feedPage}
               setFeedPage={setFeedPage}
             />

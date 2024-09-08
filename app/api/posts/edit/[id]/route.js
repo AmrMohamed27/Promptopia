@@ -6,7 +6,10 @@ export const PUT = async (req, { params }) => {
   try {
     const id = params.id;
     await dbConnect();
-    const post = await Post.findOneAndUpdate({ _id: id }, { prompt, tags });
+    const post = await Post.findByIdAndUpdate(id, { prompt, tags }).populate(
+      "creator",
+      "username email image"
+    );
     await post.save();
     return new Response(JSON.stringify(post), {
       status: 200,
