@@ -7,12 +7,17 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
+import { BiUpvote as UpvoteIcon } from "react-icons/bi";
+import { BiSolidUpvote as SolidUpvoteIcon } from "react-icons/bi";
 
 const PromptCard = ({ post, feedPage, setFeedPage, posts, setPosts }) => {
+  // Variables
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
   const [postToDelete, setPostToDelete] = useState(null);
   const { data: session } = useSession();
+
+  // Handlers
   const handleEdit = (postId) => {
     router.push(`/posts/edit/${postId}`);
   };
@@ -54,6 +59,69 @@ const PromptCard = ({ post, feedPage, setFeedPage, posts, setPosts }) => {
   const handleShowModal = (postId) => {
     setPostToDelete(postId);
     setShowModal(true);
+  };
+
+  const handleUpvote = async (postId, method) => {
+    try {
+      // Optimistically update the UI first
+      const updatedPosts = posts.map((post) => {
+        if (post._id === postId) {
+          if (method === "PUT") {
+            // Add user ID to upvotes array
+            return {
+              ...post,
+              upvotes: [...post.upvotes, session?.user.id],
+            };
+          } else {
+            // Remove user ID from upvotes array
+            return {
+              ...post,
+              upvotes: post.upvotes.filter((id) => id !== session?.user.id),
+            };
+          }
+        }
+        return post;
+      });
+
+      setPosts(updatedPosts);
+
+      // Fetch Request
+      const body = JSON.stringify({
+        userId: session?.user.id,
+        postId: postId,
+      });
+      const response = await fetch(`/api/posts/upvote`, {
+        method: method,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: body,
+      });
+      if (!response.ok) {
+        throw new Error(response.error || "Something went wrong");
+      }
+    } catch (error) {
+      console.log(error);
+      // Revert UI change if something goes wrong
+      const revertedPosts = posts.map((post) => {
+        if (post._id === postId) {
+          if (method === "PUT") {
+            // Revert the optimistic UI change
+            return {
+              ...post,
+              upvotes: post.upvotes.filter((id) => id !== session?.user.id),
+            };
+          } else {
+            return {
+              ...post,
+              upvotes: [...post.upvotes, session?.user.id],
+            };
+          }
+        }
+        return post;
+      });
+      setPosts(revertedPosts);
+    }
   };
   return (
     <div
@@ -115,28 +183,56 @@ const PromptCard = ({ post, feedPage, setFeedPage, posts, setPosts }) => {
         >
           Copy Prompt
         </button>
-        {session?.user?.email === post.creator?.email && (
-          <div className="flex flex-row gap-4">
-            <div className="relative group">
-              <DeleteIcon
-                onClick={() => handleShowModal(post._id)}
+        <div className="flex flex-row gap-4 items-center">
+          {session?.user?.email === post.creator?.email && (
+            <>
+              <div className="relative group">
+                <DeleteIcon
+                  onClick={() => handleShowModal(post._id)}
+                  className="text-xl text-primary-orange cursor-pointer"
+                ></DeleteIcon>
+                <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 hidden group-hover:block transition-opacity duration-400 ease-out bg-primary-orange text-white text-xs rounded py-1 px-2">
+                  Delete
+                </span>
+              </div>
+              <div className="relative group">
+                <EditIcon
+                  className="text-xl text-primary-orange cursor-pointer"
+                  onClick={() => handleEdit(post._id)}
+                />
+                <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 hidden group-hover:block transition-opacity duration-400 ease-out bg-primary-orange text-white text-xs rounded py-1 px-2">
+                  Edit
+                </span>
+              </div>
+            </>
+          )}
+          <div className="relative group flex flex-row gap-2 items-center">
+            {session?.user?.id ? (
+              post.upvotes?.includes(session?.user?.id) ? (
+                <SolidUpvoteIcon
+                  className="text-xl text-primary-orange cursor-pointer"
+                  onClick={() => handleUpvote(post._id, "DELETE")}
+                />
+              ) : (
+                <UpvoteIcon
+                  className="text-xl text-primary-orange cursor-pointer"
+                  onClick={() => handleUpvote(post._id, "PUT")}
+                />
+              )
+            ) : (
+              <UpvoteIcon
                 className="text-xl text-primary-orange cursor-pointer"
-              ></DeleteIcon>
-              <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 hidden group-hover:block transition-opacity duration-400 ease-out bg-primary-orange text-white text-xs rounded py-1 px-2">
-                Delete
-              </span>
-            </div>
-            <div className="relative group">
-              <EditIcon
-                className="text-xl text-primary-orange cursor-pointer"
-                onClick={() => handleEdit(post._id)}
+                onClick={() => alert("Please sign in to upvote")}
               />
-              <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 hidden group-hover:block transition-opacity duration-400 ease-out bg-primary-orange text-white text-xs rounded py-1 px-2">
-                Edit
-              </span>
-            </div>
+            )}
+            <span className="text-lg text-primary-orange cursor-pointer">
+              {post.upvotes?.length}
+            </span>
+            <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 hidden group-hover:block transition-opacity duration-400 ease-out bg-primary-orange text-white text-xs rounded py-1 px-2">
+              Upvote
+            </span>
           </div>
-        )}
+        </div>
       </div>
       {showModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50">

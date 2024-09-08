@@ -5,7 +5,13 @@ export const POST = async (req) => {
   const { prompt, tags, userId } = await req.json();
   try {
     await dbConnect();
-    const newPost = new Post({ creator: userId, prompt, tags });
+    const newPost = new Post({
+      creator: userId,
+      prompt,
+      tags,
+      upvotes: [],
+      comments: [],
+    });
     await newPost.save();
     return new Response(JSON.stringify(newPost), {
       status: 201,
