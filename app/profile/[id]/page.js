@@ -16,10 +16,10 @@ const Page = ({ params, myProfile }) => {
   const isMyProfile = myProfile || session?.user?.id === id;
 
   useEffect(() => {
-    if (id === session?.user?.id) {
+    if (isMyProfile) {
       router.push("/profile");
     }
-  }, [id, router, session]);
+  }, [isMyProfile, router]);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -52,11 +52,11 @@ const Page = ({ params, myProfile }) => {
         </div>
       ) : (
         <>
-          <div className="flex flex-col gap-8 w-full py-8 md:py-16 px-4 md:px-8 ">
+          <div className="flex flex-col gap-8 w-full py-8 md:py-16 px-4 md:px-8">
             <div className="flex flex-row gap-8 items-center">
               <Image
                 src={user.image}
-                alt={user.name}
+                alt={user.username}
                 width={100}
                 height={100}
                 className="rounded-full"

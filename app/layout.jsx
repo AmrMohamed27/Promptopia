@@ -4,6 +4,7 @@ import AuthProvider from "./context/AuthProvider";
 import Footer from "@components/Footer";
 import Background from "@components/Background";
 import { DarkModeProvider } from "@components/DarkModeContext";
+import { PostsProvider } from "@components/PostsContext";
 
 export const metadata = {
   title: "Promptopia",
@@ -12,19 +13,21 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <DarkModeProvider>
-      <html lang="en">
-        <body className="relative dark:bg-black dark:text-white">
-          <AuthProvider>
-            <Background />
-            <main className="app relative">
-              <Navbar />
-              <div className="mt-20">{children}</div>
-              <Footer />
-            </main>
-          </AuthProvider>
-        </body>
-      </html>
-    </DarkModeProvider>
+    <AuthProvider>
+      <PostsProvider>
+        <DarkModeProvider>
+          <html lang="en">
+            <body className="relative dark:bg-black dark:text-white">
+              <Background />
+              <main className="app relative">
+                <Navbar />
+                <div className="mt-20 w-full">{children}</div>
+                <Footer />
+              </main>
+            </body>
+          </html>
+        </DarkModeProvider>
+      </PostsProvider>
+    </AuthProvider>
   );
 }

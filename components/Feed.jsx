@@ -3,40 +3,35 @@
 import { useEffect, useState } from "react";
 import PromptCard from "./PromptCard";
 import LoadingCircle from "./LoadingCircle";
-
+import { useFetchPosts } from "@components/PostsContext";
 export default function Feed({ userEmail }) {
-  const [posts, setPosts] = useState([]);
-  const [fetchedPosts, setFetchedPosts] = useState([]);
   const [feedPage, setFeedPage] = useState(0);
   const [searchValue, setSearchValue] = useState("");
-  const [loading, setLoading] = useState(true);
+  const {
+    posts,
+    setPosts,
+    fetchedPosts,
+    cachedPosts,
+    setFetchedPosts,
+    loading,
+  } = useFetchPosts();
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const res = await fetch("/api/posts");
-        if (!res.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const originalData = await res.json();
-        const data = originalData.reverse();
-        if (!userEmail) {
-          setPosts(data);
-          setFetchedPosts(data);
-        } else {
-          setPosts(data.filter((post) => post.creator?.email === userEmail));
-          setFetchedPosts(
-            data.filter((post) => post.creator?.email === userEmail)
-          );
-        }
-      } catch (error) {
-        console.error("Error fetching posts:", error);
-      } finally {
-        setLoading(false); // Set loading to false when fetch is complete
-      }
+    if (userEmail) {
+      setPosts(cachedPosts.filter((post) => post.creator?.email === userEmail));
+      setFetchedPosts(
+        cachedPosts.filter((post) => post.creator?.email === userEmail)
+      );
+    } else {
+      setPosts(cachedPosts);
+      setFetchedPosts(cachedPosts);
+    }
+    return () => {
+      setPosts(cachedPosts); // Reset posts on component unmount (e.g., navigating away)
+      setFeedPage(0); // Reset page to 0 on unmount
     };
-    fetchPosts();
-  }, [userEmail]);
+  }, [userEmail, cachedPosts]);
+
 
   const handleSearchValueChange = (e) => {
     setSearchValue(e.target.value);

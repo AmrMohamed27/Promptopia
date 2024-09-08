@@ -1,9 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import { useSession } from "next-auth/react";
 import Page from "./[id]/page";
-import Feed from "@components/Feed";
 import LoadingCircle from "@components/LoadingCircle";
 
 const Profile = () => {
