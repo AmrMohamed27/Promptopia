@@ -19,7 +19,7 @@ export function DarkModeProvider({ children }) {
 
   useEffect(() => {
     const bodyElement = document.body;
-    if (isDarkMode) {
+    if (!isDarkMode) {
       bodyElement.classList.remove("dark");
       localStorage.setItem("theme", "light");
     } else {
