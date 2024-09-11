@@ -11,6 +11,8 @@ import { BiUpvote as UpvoteIcon } from "react-icons/bi";
 import { BiSolidUpvote as SolidUpvoteIcon } from "react-icons/bi";
 import { GoLinkExternal as PostIcon } from "react-icons/go";
 import { useFetchPosts } from "./PostsContext";
+import Button from "./Button";
+import Modal from "./Modal";
 
 const PromptCard = ({
   post,
@@ -51,6 +53,12 @@ const PromptCard = ({
       });
       const updatedPosts = posts.filter((post) => post._id !== postToDelete);
       setPosts(updatedPosts);
+      if (filteredPosts) {
+        const updatedFilteredPosts = filteredPosts.filter(
+          (post) => post._id !== postToDelete
+        );
+        setFilteredPosts(updatedFilteredPosts);
+      }
       setShowModal(false);
       const newTotalPages = Math.ceil(updatedPosts.length / 6);
       if (feedPage !== undefined && feedPage >= newTotalPages) {
@@ -73,7 +81,7 @@ const PromptCard = ({
   const handleUpvote = async (postId, method) => {
     try {
       // Optimistically update the UI first
-      const updatedPosts = posts.map((post) => {
+      const updater = (post) => {
         if (post._id === postId) {
           if (method === "PUT") {
             // Add user ID to upvotes array
@@ -90,9 +98,14 @@ const PromptCard = ({
           }
         }
         return post;
-      });
+      };
+      const updatedPosts = posts.map(updater);
 
       setPosts(updatedPosts);
+      if (filteredPosts) {
+        const updatedFilteredPosts = filteredPosts.map(updater);
+        setFilteredPosts(updatedFilteredPosts);
+      }
 
       // Fetch Request
       const body = JSON.stringify({
@@ -112,7 +125,7 @@ const PromptCard = ({
     } catch (error) {
       console.log(error);
       // Revert UI change if something goes wrong
-      const revertedPosts = posts.map((post) => {
+      const reverter = (post) => {
         if (post._id === postId) {
           if (method === "PUT") {
             // Revert the optimistic UI change
@@ -128,8 +141,13 @@ const PromptCard = ({
           }
         }
         return post;
-      });
+      };
+      const revertedPosts = posts.map(reverter);
       setPosts(revertedPosts);
+      if (filteredPosts) {
+        const revertedFilteredPosts = filteredPosts.map(reverter);
+        setFilteredPosts(revertedFilteredPosts);
+      }
     }
   };
 
@@ -197,12 +215,13 @@ const PromptCard = ({
         ))}
       </div>
       <div className="flex items-center justify-between gap-4 my-4">
-        <button
-          className="bg-gradient-to-r from-orange-600 to-amber-600 text-white rounded-full py-2 px-6 hover:cursor-pointer text-sm flex items-center justify-center"
+        <Button
+          className={"rounded-full"}
+          color={"orange"}
           onClick={() => handleCopy(post.prompt)}
         >
           Copy Prompt
-        </button>
+        </Button>
         <div className="flex flex-row gap-4 items-center">
           {session?.user?.email === post.creator?.email && (
             <>
@@ -255,29 +274,14 @@ const PromptCard = ({
         </div>
       </div>
       {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50">
-          <div className="bg-white dark:bg-black border-2 border-transparent dark:border-white rounded-lg p-8 shadow-lg text-black dark:text-white">
-            <h2 className="text-xl font-bold mb-4 ">Are you sure?</h2>
-            <p className="text-gray-700 dark:text-white/60 mb-6">
-              Do you really want to delete this post? This action cannot be
-              undone.
-            </p>
-            <div className="flex justify-end gap-4">
-              <button
-                className="bg-gradient-to-r from-orange-600 to-amber-600 text-white rounded-full py-2 px-6 hover:cursor-pointer text-sm flex items-center justify-center"
-                onClick={handleDelete}
-              >
-                Delete
-              </button>
-              <button
-                className="bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-full py-2 px-6 hover:cursor-pointer text-sm flex items-center justify-center"
-                onClick={() => setShowModal(false)}
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
+        <Modal
+          message={
+            "Do you really want to delete this post? This action cannot be undone."
+          }
+          confirmText={"Delete"}
+          handleConfirm={handleDelete}
+          handleCancel={() => setShowModal(false)}
+        />
       )}
     </div>
   );

@@ -5,7 +5,7 @@ export const GET = async (req, { params }) => {
   const userId = params.id;
   try {
     await dbConnect();
-    const user = await User.findOne({ _id: userId });
+    const user = await User.findById(userId);
     if (!user) {
       return new Response("User not found", { status: 404 });
     }

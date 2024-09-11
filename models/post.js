@@ -1,21 +1,5 @@
 import { Schema, model, models } from "mongoose";
 
-const CommentSchema = new Schema({
-  text: {
-    type: String,
-    required: [true, "Comment text is required"],
-  },
-  creator: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
-    required: [true, "Comment creator is required"],
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-});
-
 const PostSchema = new Schema({
   prompt: {
     type: String,
@@ -42,7 +26,11 @@ const PostSchema = new Schema({
     ref: "User",
     default: [],
   },
-  comments: [CommentSchema], // Embedding CommentSchema for replies
+  comments: {
+    type: [Schema.Types.ObjectId],
+    ref: "Comment",
+    default: [],
+  },
   createdAt: {
     type: Date,
     default: Date.now,

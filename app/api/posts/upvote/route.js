@@ -1,5 +1,4 @@
 import { dbConnect } from "@utils/database";
-import { Types } from "mongoose";
 import Post from "@models/post";
 
 export const PUT = async (req) => {

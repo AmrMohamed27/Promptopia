@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import PromptCard from "./PromptCard";
 import LoadingCircle from "./LoadingCircle";
 import { useFetchPosts } from "@components/PostsContext";
+import Button from "./Button";
 export default function Feed({ userEmail }) {
   const [feedPage, setFeedPage] = useState(0);
   const [searchValue, setSearchValue] = useState("");
@@ -55,7 +56,9 @@ export default function Feed({ userEmail }) {
       setFilteredPosts(posts);
     } else {
       setFilteredPosts((filteredPosts) =>
-        filteredPosts.filter((post) => post.prompt.includes(text))
+        filteredPosts.filter((post) =>
+          post.prompt.toLowerCase().includes(text.toLowerCase())
+        )
       );
     }
     setFeedPage(0);
@@ -74,18 +77,20 @@ export default function Feed({ userEmail }) {
             onChange={handleSearchValueChange}
           />
           <div className="flex flex-row gap-4 items-center">
-            <button
-              className="bg-gradient-to-r from-orange-600 to-amber-600 text-white rounded-lg py-2 px-6 hover:cursor-pointer text-sm flex items-center justify-center"
+            <Button
               onClick={() => handleSearch(searchValue)}
+              color={"orange"}
+              className={"rounded-lg"}
             >
               Search
-            </button>
-            <button
-              className="bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-lg py-2 px-6 hover:cursor-pointer text-sm flex items-center justify-center"
+            </Button>
+            <Button
+              color={"blue"}
               onClick={handleReset}
+              className={"rounded-lg"}
             >
               Reset
-            </button>
+            </Button>
           </div>
         </div>
         {/* Loading Indicator */}

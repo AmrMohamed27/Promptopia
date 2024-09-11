@@ -50,8 +50,10 @@ const Navbar = () => {
         {/* PC Nav */}
         {status === "authenticated" ? (
           <div className="hidden md:flex flex-row gap-4 items-center">
-            <Button href="/posts/create">Create a Post</Button>
-            <Button onClick={signOut} white>
+            <Button color={"black"} href="/posts/create">
+              Create a Post
+            </Button>
+            <Button onClick={signOut} color={"white"}>
               Sign Out
             </Button>
             <div
@@ -98,6 +100,7 @@ const Navbar = () => {
               Object.values(providers).map((provider) => (
                 <Button
                   key={provider.name}
+                  color={"black"}
                   onClick={() => {
                     signIn(provider.id);
                   }}
@@ -127,12 +130,16 @@ const Navbar = () => {
                 <Link href="/posts/create">Create a Prompt</Link>
               </li>
               <li className="w-full">
-                <Button onClick={signOut} className={"w-full"}>
+                <Button onClick={signOut} className={"w-full"} color={"black"}>
                   Sign Out
                 </Button>
               </li>
               <li className="w-full">
-                <Button onClick={toggleDarkMode} className={"w-full"}>
+                <Button
+                  onClick={toggleDarkMode}
+                  className={"w-full"}
+                  color={`${isDarkMode ? "white" : "black"}`}
+                >
                   <DarkModeIcon className={"text-2xl"} />
                 </Button>
               </li>

@@ -5,10 +5,9 @@ export const dynamic = "force-dynamic";
 export const GET = async (req) => {
   try {
     await dbConnect();
-    const posts = await Post.find({}).populate(
-      "creator",
-      "username email image"
-    );
+    const posts = await Post.find({})
+      .populate("creator", "username email image")
+      .populate("comments");
     return new Response(JSON.stringify(posts), {
       status: 200,
     });
