@@ -1,19 +1,18 @@
 import mongoose from "mongoose";
 
-let isConnected = false; // track connection status
+const connection = { isConnected: 0 }; // track connection status
 
 export const dbConnect = async () => {
-  mongoose.set("strictQuery", true);
-  mongoose.set("strictPopulate", false);
-  if (isConnected) {
+  console.log(mongoose.connection.models);
+  if (connection.isConnected) {
     console.log("MongoDB is Already Connected");
     return;
   }
   try {
-    await mongoose.connect(process.env.MONGODB_URI, {
+    const db = await mongoose.connect(process.env.MONGODB_URI, {
       dbName: "promptopia",
     });
-    isConnected = true;
+    connection.isConnected = db.connection.readyState;
     console.log("MongoDB Connected");
   } catch (error) {
     console.error("MongoDB Connection Error: ", error);

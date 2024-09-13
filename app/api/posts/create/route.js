@@ -9,8 +9,6 @@ export const POST = async (req) => {
       creator: userId,
       prompt,
       tags,
-      upvotes: [],
-      comments: [],
     });
     await newPost.save();
     return new Response(JSON.stringify(newPost), {

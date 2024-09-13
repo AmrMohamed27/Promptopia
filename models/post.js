@@ -26,14 +26,34 @@ const PostSchema = new Schema({
     ref: "User",
     default: [],
   },
-  comments: {
-    type: [Schema.Types.ObjectId],
-    ref: "Comment",
-    default: [],
-  },
   createdAt: {
     type: Date,
     default: Date.now,
+  },
+  comments: {
+    type: [
+      {
+        creator: {
+          type: Schema.Types.ObjectId,
+          ref: "User",
+          required: true,
+        },
+        text: {
+          type: String,
+          required: true,
+        },
+        upvotes: {
+          type: [Schema.Types.ObjectId],
+          ref: "User",
+          default: [],
+        },
+        createdAt: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
+    default: [],
   },
 });
 

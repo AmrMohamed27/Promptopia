@@ -7,7 +7,13 @@ export const GET = async (req) => {
     await dbConnect();
     const posts = await Post.find({})
       .populate("creator", "username email image")
-      .populate("comments");
+      .populate({
+        path: "comments", // Populate the comments
+        populate: {
+          path: "creator", // Also populate the creator of the comment
+          select: "username email image",
+        },
+      });
     return new Response(JSON.stringify(posts), {
       status: 200,
     });

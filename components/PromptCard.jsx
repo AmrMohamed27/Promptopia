@@ -153,7 +153,7 @@ const PromptCard = ({
 
   return (
     <div
-      className={`${post.prompt.length > 300 ? "basis-full flex-grow" : "flex-grow basis-1/4"} max-md:w-full flex flex-col border-2 border-black/10 dark:border-white/30 rounded-lg p-4 gap-4 shadow-lg shadow-transparent hover:shadow-primary-orange/20 hover:border-primary-orange/35 transition-all duration-500 relative`}
+      className={`${post?.prompt.length > 300 ? "basis-full flex-grow" : "flex-grow basis-1/4"} max-md:w-full flex flex-col border-2 border-black/10 dark:border-white/30 rounded-lg p-4 gap-4 shadow-lg shadow-transparent hover:shadow-primary-orange/20 hover:border-primary-orange/35 transition-all duration-500 relative`}
       key={post._id}
     >
       {/* Copy Icon */}
