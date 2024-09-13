@@ -72,7 +72,7 @@ export default function Feed({ userEmail }) {
           <input
             type="text"
             placeholder="Search for a #tag, @username or prompt"
-            className="w-full px-4 py-2 rounded-lg lg:max-w-[75%] shadow-lg shadow-black/10 dark:shadow-white/30 outline-none text-black"
+            className="w-full px-4 py-2 rounded-lg lg:max-w-[75%] outline-none text-black dark:text-white bg-transparent border-2 border-black/20 dark:border-white/30"
             value={searchValue}
             onChange={handleSearchValueChange}
           />
