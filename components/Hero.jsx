@@ -9,7 +9,7 @@ const Hero = () => {
         <h1 className="text-4xl md:text-6xl font-extrabold text-center text-pale-blue dark:text-white">
           Discover & Share <br />
           <TypeAnimation
-            className="orange_gradient"
+            className="orange_gradient typewriter"
             sequence={[
               "AI Powered Prompts for Devs",
               1000,
@@ -22,7 +22,7 @@ const Hero = () => {
             ]}
             speed={25}
             repeat={Infinity}
-            cursor={true}
+            cursor={false}
             preRenderFirstString={true}
           />
         </h1>
