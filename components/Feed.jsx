@@ -5,11 +5,15 @@ import PromptCard from "./PromptCard";
 import LoadingCircle from "./LoadingCircle";
 import { useFetchPosts } from "@components/PostsContext";
 import Button from "./Button";
+import { sortOptions } from "@utils/constants";
+import Dropdown from "./Dropdown";
+
 export default function Feed({ userEmail }) {
   const [feedPage, setFeedPage] = useState(0);
   const [searchValue, setSearchValue] = useState("");
   const { posts, loading } = useFetchPosts();
   const [filteredPosts, setFilteredPosts] = useState(posts);
+  const [sortBy, setSortBy] = useState(null);
 
   useEffect(() => {
     if (userEmail) {
@@ -24,6 +28,33 @@ export default function Feed({ userEmail }) {
       setFeedPage(0); // Reset page to 0 on unmount
     };
   }, [userEmail, posts, setFilteredPosts]);
+
+  useEffect(() => {
+    const sortPosts = (posts, defaultPosts, selectedOption) => {
+      if (!selectedOption) return defaultPosts;
+      switch (selectedOption.label) {
+        case "Most Recent":
+          return posts.sort(
+            (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+          );
+
+        case "Oldest":
+          return posts.sort(
+            (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+          );
+
+        case "Most Liked":
+          return posts.sort((a, b) => b.upvotes.length - a.upvotes.length);
+
+        case "Most Commented":
+          return posts.sort((a, b) => b.comments.length - a.comments.length);
+
+        default:
+          return defaultPosts;
+      }
+    };
+    setFilteredPosts(sortPosts([...filteredPosts], [...posts], sortBy));
+  }, [sortBy, posts]);
 
   const handleSearchValueChange = (e) => {
     setSearchValue(e.target.value);
@@ -95,6 +126,15 @@ export default function Feed({ userEmail }) {
         </div>
         {/* Loading Indicator */}
         {loading && <LoadingCircle />}
+        {/* Sort By */}
+        <div className="flex flex-row gap-4 items-center text-black dark:text-white -mt-8 -mb-8">
+          <span>Sort By: </span>
+          <Dropdown
+            options={sortOptions}
+            sortBy={sortBy}
+            setSortBy={setSortBy}
+          />
+        </div>
         {/* Prompts List */}
         <div className="flex flex-row flex-wrap justify-between gap-8 items-start w-full ">
           {filteredPosts.slice(feedPage * 6, feedPage * 6 + 6).map((post) => (
