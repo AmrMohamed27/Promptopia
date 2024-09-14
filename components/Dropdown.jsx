@@ -44,7 +44,7 @@ const Dropdown = ({
             <li
               key={index}
               onClick={() => handleOptionClick(option)}
-              className="flex items-center px-4 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
+              className="flex items-center px-4 py-2 cursor-pointer hover:bg-black/30 dark:hover:bg-white/30"
             >
               {/* Placeholder for Icon */}
               <div className="mr-2">
