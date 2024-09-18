@@ -10,7 +10,6 @@ import Link from "next/link";
 import { BiUpvote as UpvoteIcon } from "react-icons/bi";
 import { BiSolidUpvote as SolidUpvoteIcon } from "react-icons/bi";
 import { GoLinkExternal as PostIcon } from "react-icons/go";
-import { useFetchPosts } from "../common/PostsContext";
 import Button from "../common/Button";
 import Modal from "../common/Modal";
 
@@ -20,13 +19,13 @@ const PromptCard = ({
   setFeedPage,
   filteredPosts,
   setFilteredPosts,
+  posts,
 }) => {
   // Variables
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
   const [postToDelete, setPostToDelete] = useState(null);
   const { data: session } = useSession();
-  const { posts, setPosts } = useFetchPosts();
 
   // Handlers
   const handleEdit = (postId) => {
@@ -52,7 +51,6 @@ const PromptCard = ({
         }),
       });
       const updatedPosts = posts.filter((post) => post._id !== postToDelete);
-      setPosts(updatedPosts);
       if (filteredPosts) {
         const updatedFilteredPosts = filteredPosts.filter(
           (post) => post._id !== postToDelete

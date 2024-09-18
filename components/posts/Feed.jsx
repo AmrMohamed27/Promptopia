@@ -142,6 +142,7 @@ export default function Feed({ userEmail, posts }) {
               setFilteredPosts={setFilteredPosts}
               feedPage={feedPage}
               setFeedPage={setFeedPage}
+              posts={posts}
             />
           ))}
         </div>
