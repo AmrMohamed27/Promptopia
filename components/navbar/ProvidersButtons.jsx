@@ -8,6 +8,7 @@ const ProvidersButtons = () => {
   const { providers } = useFetchPosts();
   return (
     <>
+     
       {providers &&
         Object.values(providers).map((provider) => (
           <Button

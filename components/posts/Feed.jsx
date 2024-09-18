@@ -2,23 +2,21 @@
 
 import { useEffect, useState } from "react";
 import PromptCard from "./PromptCard";
-import LoadingCircle from "../common/LoadingCircle";
-import { useFetchPosts } from "@components/common/PostsContext";
 import Button from "../common/Button";
 import { sortOptions } from "@utils/constants";
 import Dropdown from "./Dropdown";
 
-export default function Feed({ userEmail }) {
+export default function Feed({ userEmail, posts }) {
   const [feedPage, setFeedPage] = useState(0);
   const [searchValue, setSearchValue] = useState("");
-  const { posts, loading } = useFetchPosts();
   const [filteredPosts, setFilteredPosts] = useState(posts);
   const [sortBy, setSortBy] = useState(null);
 
+  // Filter posts for a user
   useEffect(() => {
     if (userEmail) {
       setFilteredPosts(
-        posts.filter((post) => post.creator?.email === userEmail)
+        posts?.filter((post) => post.creator?.email === userEmail)
       );
     } else {
       setFilteredPosts(posts);
@@ -27,7 +25,7 @@ export default function Feed({ userEmail }) {
       setFilteredPosts(posts); // Reset posts on component unmount (e.g., navigating away)
       setFeedPage(0); // Reset page to 0 on unmount
     };
-  }, [userEmail, posts, setFilteredPosts]);
+  }, [userEmail, posts]);
 
   useEffect(() => {
     const sortPosts = (posts, defaultPosts, selectedOption) => {
@@ -98,7 +96,6 @@ export default function Feed({ userEmail }) {
     <>
       <div className="gap-24 flex flex-col items-start w-full mt-4">
         {/* Search Bar */}
-
         <div className="flex flex-col md:flex-row items-center justify-center gap-8 w-full px-4 md:px-8">
           <input
             type="text"
@@ -125,7 +122,7 @@ export default function Feed({ userEmail }) {
           </div>
         </div>
         {/* Loading Indicator */}
-        {loading && <LoadingCircle />}
+        {/* {loading && <LoadingCircle />} */}
         {/* Sort By */}
         <div className="flex flex-row gap-4 items-center text-black dark:text-white -mt-8 -mb-8">
           <span>Sort By: </span>
@@ -137,7 +134,7 @@ export default function Feed({ userEmail }) {
         </div>
         {/* Prompts List */}
         <div className="flex flex-row flex-wrap justify-between gap-8 items-start w-full ">
-          {filteredPosts.slice(feedPage * 6, feedPage * 6 + 6).map((post) => (
+          {filteredPosts?.slice(feedPage * 6, feedPage * 6 + 6).map((post) => (
             <PromptCard
               key={post._id}
               post={post}
@@ -151,18 +148,9 @@ export default function Feed({ userEmail }) {
       </div>
       {/* Pages */}
       <div className="flex flex-row justify-center items-center gap-4 mt-8">
-        {Array.from({ length: Math.ceil(posts.length / 6) }).map((_, index) => {
-          return index < 5 ? (
-            <div
-              key={index}
-              className={`flex items-center justify-center px-4 py-2 cursor-pointer rounded-lg ${index === feedPage ? "bg-primary-orange text-white" : "bg-blue-600 text-white"}`}
-              onClick={() => setFeedPage(index)}
-            >
-              <span>{index + 1}</span>
-            </div>
-          ) : index === Math.ceil(posts.length / 6) - 1 ? (
-            <div className="flex flex-row gap-4 items-end">
-              <span>....</span>
+        {Array.from({ length: Math.ceil(posts?.length / 6) }).map(
+          (_, index) => {
+            return index < 5 ? (
               <div
                 key={index}
                 className={`flex items-center justify-center px-4 py-2 cursor-pointer rounded-lg ${index === feedPage ? "bg-primary-orange text-white" : "bg-blue-600 text-white"}`}
@@ -170,11 +158,22 @@ export default function Feed({ userEmail }) {
               >
                 <span>{index + 1}</span>
               </div>
-            </div>
-          ) : (
-            <></>
-          );
-        })}
+            ) : index === Math.ceil(posts?.length / 6) - 1 ? (
+              <div className="flex flex-row gap-4 items-end">
+                <span>....</span>
+                <div
+                  key={index}
+                  className={`flex items-center justify-center px-4 py-2 cursor-pointer rounded-lg ${index === feedPage ? "bg-primary-orange text-white" : "bg-blue-600 text-white"}`}
+                  onClick={() => setFeedPage(index)}
+                >
+                  <span>{index + 1}</span>
+                </div>
+              </div>
+            ) : (
+              <></>
+            );
+          }
+        )}
       </div>
     </>
   );

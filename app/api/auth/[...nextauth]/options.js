@@ -2,7 +2,6 @@ import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import { dbConnect } from "@utils/database";
 import User from "@models/user";
-import mongoose from "mongoose";
 
 export const options = {
   providers: [

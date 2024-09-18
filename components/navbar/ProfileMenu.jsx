@@ -47,7 +47,7 @@ const ProfileMenu = ({ mobile }) => {
         {profileIsOpen ? (
           <>
             <Link
-              href="/profile"
+              href={`/profile/${session?.user.id}`}
               className={`text-lg ml-4 hover:text-pale-blue dark:hover:text-primary-orange hover:underline`}
             >
               {session?.user.name.split(" ")[0]}
@@ -96,7 +96,7 @@ const ProfileMenu = ({ mobile }) => {
               <Button
                 onClick={toggleDarkMode}
                 className={"w-full"}
-                color={`${isDarkMode ? "white" : "black"}`}
+                color={`black`}
               >
                 <DarkModeIcon className={"text-2xl"} />
               </Button>
