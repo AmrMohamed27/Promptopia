@@ -1,5 +1,5 @@
 export async function fetchPosts() {
-  const res = await fetch(`${process.env.NEXTAUTH_URL}/api/posts`);
+  const res = await fetch(`${process.env.ORIGIN_URL}/api/posts`);
   if (!res.ok) {
     throw new Error("Failed to fetch posts");
   }
@@ -9,7 +9,7 @@ export async function fetchPosts() {
 
 export async function fetchUser(id) {
   try {
-    const response = await fetch(`${process.env.NEXTAUTH_URL}/api/user/${id}`, {
+    const response = await fetch(`${process.env.ORIGIN_URL}/api/user/${id}`, {
       method: "GET",
     });
     if (!response.ok) {
