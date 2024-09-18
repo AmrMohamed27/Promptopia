@@ -3,9 +3,8 @@
 import { useSession, signOut } from "next-auth/react";
 import Button from "../common/Button";
 import ProfileMenu from "./ProfileMenu";
-import DarkModeIcon from "../common/DarkModeIcon";
+import DarkModeIcon from "./DarkModeIcon";
 import ProvidersButtons from "./ProvidersButtons";
-import LoadingCircle from "@components/common/LoadingCircle";
 import Image from "next/image";
 
 const DesktopNav = () => {

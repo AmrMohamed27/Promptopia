@@ -1,12 +1,5 @@
-"use client";
-import { useDarkMode } from "@components/common/DarkModeContext";
-
 const Background = () => {
-  const { isDarkMode } = useDarkMode();
-
-  return isDarkMode ? (
-    <></>
-  ) : (
+  return (
     <div className={`main`}>
       <div className={`gradient`}></div>
     </div>

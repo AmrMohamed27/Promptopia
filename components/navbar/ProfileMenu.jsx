@@ -5,9 +5,9 @@ import { useState } from "react";
 import { IoMdArrowDropright as ArrowRight } from "react-icons/io";
 import { IoMdArrowDropleft as ArrowLeft } from "react-icons/io";
 import Button from "../common/Button";
-import DarkModeIcon from "../common/DarkModeIcon";
-import { useDarkMode } from "../common/DarkModeContext";
+import DarkModeIcon from "./DarkModeIcon";
 import { signOut, useSession } from "next-auth/react";
+import useDarkMode from "@hooks/useDarkMode";
 
 const ProfileMenu = ({ mobile }) => {
   // Profile Dropdown
@@ -23,7 +23,7 @@ const ProfileMenu = ({ mobile }) => {
   };
 
   // Dark Mode
-  const { isDarkMode, toggleDarkMode } = useDarkMode();
+  const [_, toggleDarkMode] = useDarkMode();
 
   // Session
   const { data: session, status } = useSession();
