@@ -1,5 +1,5 @@
-import Feed from "@components/Feed";
-import Hero from "@components/Hero";
+import Feed from "@components/posts/Feed";
+import Hero from "@components/home/Hero";
 
 const Home = () => {
   return (

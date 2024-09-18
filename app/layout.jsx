@@ -1,10 +1,10 @@
 import "@styles/globals.css";
-import Navbar from "@components/Navbar";
+import Navbar from "@components/navbar/Navbar";
 import AuthProvider from "./context/AuthProvider";
-import Footer from "@components/Footer";
-import Background from "@components/Background";
-import { DarkModeProvider } from "@components/DarkModeContext";
-import { PostsProvider } from "@components/PostsContext";
+import Footer from "@components/common/Footer";
+import Background from "@components/common/Background";
+import { DarkModeProvider } from "@components/common/DarkModeContext";
+import { PostsProvider } from "@components/common/PostsContext";
 
 export const metadata = {
   title: "Promptopia",

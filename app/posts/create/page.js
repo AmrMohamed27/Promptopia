@@ -1,5 +1,5 @@
 "use client";
-import CreateForm from "@components/CreateForm";
+import CreateForm from "@components/posts/CreateForm";
 import { useSession } from "next-auth/react";
 
 const Page = () => {

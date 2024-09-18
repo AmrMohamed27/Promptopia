@@ -1,5 +1,5 @@
 "use client";
-import { useDarkMode } from "@components/DarkModeContext";
+import { useDarkMode } from "@components/common/DarkModeContext";
 
 const Background = () => {
   const { isDarkMode } = useDarkMode();

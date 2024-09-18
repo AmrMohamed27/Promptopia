@@ -1,5 +1,6 @@
 "use client";
 import { createContext, useContext, useState, useEffect } from "react";
+import { getProviders } from "next-auth/react";
 
 // Create the Dark Mode Context
 const PostsContext = createContext();
@@ -8,6 +9,14 @@ const PostsContext = createContext();
 export function PostsProvider({ children }) {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [providers, setProviders] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      const res = await getProviders();
+      setProviders(res);
+    })();
+  }, []);
 
   const fetchPosts = async () => {
     try {
@@ -38,6 +47,7 @@ export function PostsProvider({ children }) {
         loading,
         setLoading,
         fetchPosts,
+        providers,
       }}
     >
       {children}

@@ -10,9 +10,9 @@ import Link from "next/link";
 import { BiUpvote as UpvoteIcon } from "react-icons/bi";
 import { BiSolidUpvote as SolidUpvoteIcon } from "react-icons/bi";
 import { GoLinkExternal as PostIcon } from "react-icons/go";
-import { useFetchPosts } from "./PostsContext";
-import Button from "./Button";
-import Modal from "./Modal";
+import { useFetchPosts } from "../common/PostsContext";
+import Button from "../common/Button";
+import Modal from "../common/Modal";
 
 const PromptCard = ({
   post,

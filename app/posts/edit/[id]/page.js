@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import CreateForm from "@components/CreateForm";
+import CreateForm from "@components/posts/CreateForm";
 import { useSession } from "next-auth/react";
-import LoadingCircle from "@components/LoadingCircle";
+import LoadingCircle from "@components/common/LoadingCircle";
 
 const Page = ({ params }) => {
   const { data: session } = useSession();

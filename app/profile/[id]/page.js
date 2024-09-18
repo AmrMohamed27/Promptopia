@@ -1,9 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import Feed from "@components/Feed";
+import Feed from "@components/posts/Feed";
 import { useEffect, useState } from "react";
-import LoadingCircle from "@components/LoadingCircle";
+import LoadingCircle from "@components/common/LoadingCircle";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 

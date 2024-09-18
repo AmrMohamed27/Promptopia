@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 import PromptCard from "./PromptCard";
-import LoadingCircle from "./LoadingCircle";
-import { useFetchPosts } from "@components/PostsContext";
-import Button from "./Button";
+import LoadingCircle from "../common/LoadingCircle";
+import { useFetchPosts } from "@components/common/PostsContext";
+import Button from "../common/Button";
 import { sortOptions } from "@utils/constants";
 import Dropdown from "./Dropdown";
 

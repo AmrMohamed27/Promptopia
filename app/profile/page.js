@@ -2,7 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import Page from "./[id]/page";
-import LoadingCircle from "@components/LoadingCircle";
+import LoadingCircle from "@components/common/LoadingCircle";
 
 const Profile = () => {
   const { data: session, status } = useSession();

@@ -3,7 +3,7 @@
 import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { useFetchPosts } from "./PostsContext";
+import { useFetchPosts } from "../common/PostsContext";
 
 const CreateForm = ({ initialPrompt, initialTagsString, postId, isEdit }) => {
   const router = useRouter();

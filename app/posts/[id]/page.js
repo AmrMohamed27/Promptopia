@@ -1,12 +1,12 @@
 "use client";
-import LoadingCircle from "@components/LoadingCircle";
+import LoadingCircle from "@components/common/LoadingCircle";
 import { useState, useRef } from "react";
-import PromptCard from "@components/PromptCard";
-import Button from "@components/Button";
-import Modal from "@components/Modal";
+import PromptCard from "@components/posts/PromptCard";
+import Button from "@components/common/Button";
+import Modal from "@components/common/Modal";
 import { useSession } from "next-auth/react";
-import { useFetchPosts } from "@components/PostsContext";
-import CommentCard from "@components/CommentCard";
+import { useFetchPosts } from "@components/common/PostsContext";
+import CommentCard from "@components/comments/CommentCard";
 
 const Page = ({ params }) => {
   const { data: session } = useSession();

@@ -5,7 +5,7 @@ import { useState } from "react";
 import { formatTimeAgo } from "@utils/date";
 import { useSession } from "next-auth/react";
 import { MdDeleteOutline as DeleteIcon } from "react-icons/md";
-import Modal from "./Modal";
+import Modal from "../common/Modal";
 
 const CommentCard = ({ comment, postId, textareaRef, handleCommentDelete }) => {
   const { text, creator, createdAt, upvotes, _id: commentId } = comment;
