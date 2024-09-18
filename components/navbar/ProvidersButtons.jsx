@@ -1,14 +1,19 @@
 "use client";
 
-import { useFetchPosts } from "@components/common/PostsContext";
 import Button from "../common/Button";
 import { signIn } from "next-auth/react";
+import { useState, useEffect } from "react";
 
 const ProvidersButtons = () => {
-  const { providers } = useFetchPosts();
+  const [providers, setProviders] = useState({});
+  useEffect(() => {
+    (async () => {
+      const res = await getProviders();
+      setProviders(res);
+    })();
+  }, []);
   return (
     <>
-     
       {providers &&
         Object.values(providers).map((provider) => (
           <Button
