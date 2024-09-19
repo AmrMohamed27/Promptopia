@@ -11,6 +11,7 @@ export const PUT = async (req) => {
     await Post.findByIdAndUpdate(postId, {
       $push: { comments: comment },
     });
+    console.log(comment);
     return new Response(JSON.stringify(comment), {
       status: 200,
     });

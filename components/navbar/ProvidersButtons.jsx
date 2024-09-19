@@ -3,6 +3,7 @@
 import Button from "../common/Button";
 import { signIn } from "next-auth/react";
 import { useState, useEffect } from "react";
+import { getProviders } from "next-auth/react";
 
 const ProvidersButtons = () => {
   const [providers, setProviders] = useState({});

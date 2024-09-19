@@ -19,6 +19,7 @@ export const options = {
       try {
         await dbConnect();
         // If user exists
+        console.log(profile);
         const userExists = await User.findOne({ email: profile.email });
 
         // If not create a new user and save it

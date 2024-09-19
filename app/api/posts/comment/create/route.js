@@ -11,6 +11,7 @@ export const POST = async (req) => {
     await Post.findByIdAndUpdate(postId, {
       $push: { comments: newComment },
     }).populate("creator");
+    console.log(await Post.findById(postId));
     const finalComment = {
       ...newComment,
       creator: user,

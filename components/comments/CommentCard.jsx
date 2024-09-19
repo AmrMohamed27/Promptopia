@@ -1,29 +1,47 @@
+"use client";
 import Image from "next/image";
 import { BiUpvote as UpvoteIcon } from "react-icons/bi";
 import { BiSolidUpvote as SolidUpvoteIcon } from "react-icons/bi";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { formatTimeAgo } from "@utils/date";
 import { useSession } from "next-auth/react";
 import { MdDeleteOutline as DeleteIcon } from "react-icons/md";
 import Modal from "../common/Modal";
 
-const CommentCard = ({ comment, postId, textareaRef, handleCommentDelete }) => {
+const CommentCard = ({ comment: initialComment, post, setPost }) => {
+  const [comment, setComment] = useState(initialComment);
   const { text, creator, createdAt, upvotes, _id: commentId } = comment;
+  const postId = post._id;
+
   const { data: session } = useSession();
-  const [upvotesLength, setUpvotesLength] = useState(upvotes?.length || 0);
-  const [hasUpvoted, setHasUpvoted] = useState(
-    upvotes?.some((arr) => arr.includes(session?.user.id)) || false
-  );
+  // const [upvotesLength, setUpvotesLength] = useState(upvotes?.length || 0);
+  // const [hasUpvoted, setHasUpvoted] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
   const handleUpvote = async (method) => {
     try {
-      // Fetch Request
+      // Update UI
       method === "PUT"
-        ? upvotes.push(session?.user.id)
-        : upvotes.splice(upvotes.indexOf(session?.user.id), 1);
+        ? setComment((prev) => ({
+            ...prev,
+            upvotes: [...prev.upvotes, session?.user.id],
+          }))
+        : setComment((prev) => ({
+            ...prev,
+            upvotes: prev.upvotes.filter((id) => id != session?.user.id),
+          }));
+      let newComment;
+      method === "PUT"
+        ? (newComment = {
+            ...comment,
+            upvotes: [...comment.upvotes, session?.user.id],
+          })
+        : (newComment = {
+            ...comment,
+            upvotes: comment.upvotes.filter((id) => id != session?.user.id),
+          });
       const body = JSON.stringify({
-        comment: comment,
+        comment: newComment,
         postId: postId,
       });
       const response = await fetch(`/api/posts/comment/edit`, {
@@ -35,21 +53,18 @@ const CommentCard = ({ comment, postId, textareaRef, handleCommentDelete }) => {
       });
       if (!response.ok) {
         throw new Error(response.error || "Something went wrong");
-      } else {
-        const updatedComment = await response.json();
-        console.log(updatedComment.upvotes);
-        if (
-          (method === "PUT" &&
-            updatedComment.upvotes.includes(session?.user?.id)) ||
-          (method === "DELETE" &&
-            !updatedComment.upvotes.includes(session?.user?.id))
-        ) {
-          setUpvotesLength((prev) => (method === "PUT" ? prev + 1 : prev - 1));
-          setHasUpvoted(!hasUpvoted);
-        } else {
-          alert("An error has occured");
-        }
       }
+      // if (
+      //   (method === "PUT" &&
+      //     updatedComment.upvotes.includes(session?.user?.id)) ||
+      //   (method === "DELETE" &&
+      //     !updatedComment.upvotes.includes(session?.user?.id))
+      // ) {
+      //   setUpvotesLength((prev) => (method === "PUT" ? prev + 1 : prev - 1));
+      //   setHasUpvoted(!hasUpvoted);
+      // } else {
+      //   alert("An error has occurred");
+      // }
     } catch (error) {
       console.log(error);
     }
@@ -71,10 +86,13 @@ const CommentCard = ({ comment, postId, textareaRef, handleCommentDelete }) => {
       });
       if (!response.ok) {
         throw new Error(response.error || "Something went wrong");
-      } else {
-        handleCommentDelete(commentId);
-        setShowModal(false);
       }
+      // Filter out the deleted comment
+      setPost({
+        ...post,
+        comments: post.comments.filter((c) => c._id != commentId),
+      });
+      setShowModal(false);
     } catch (error) {
       console.log(error);
     }
@@ -110,7 +128,7 @@ const CommentCard = ({ comment, postId, textareaRef, handleCommentDelete }) => {
           <div className="flex flex-row gap-2 items-center justify-center ">
             <div className="hover:bg-black/10 dark:hover:bg-white/10 rounded-full flex items-center justify-center p-2 cursor-pointer">
               {session?.user?.id ? (
-                hasUpvoted ? (
+                upvotes?.includes(session?.user?.id) ? (
                   <SolidUpvoteIcon
                     className="text-base text-primary-orange cursor-pointer"
                     onClick={() => handleUpvote("DELETE")}
@@ -128,7 +146,7 @@ const CommentCard = ({ comment, postId, textareaRef, handleCommentDelete }) => {
                 />
               )}
             </div>
-            <span className="text-primary-orange">{upvotesLength}</span>
+            <span className="text-primary-orange">{upvotes?.length}</span>
           </div>
           {creator._id === session?.user?.id && commentId !== undefined && (
             <div

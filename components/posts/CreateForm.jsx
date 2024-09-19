@@ -3,7 +3,6 @@
 import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { useFetchPosts } from "../common/PostsContext";
 
 const CreateForm = ({ initialPrompt, initialTagsString, postId, isEdit }) => {
   const router = useRouter();
@@ -11,7 +10,6 @@ const CreateForm = ({ initialPrompt, initialTagsString, postId, isEdit }) => {
 
   const [prompt, setPrompt] = useState(initialPrompt || "");
   const [tagsString, setTagsString] = useState(initialTagsString || "");
-  const { setPosts, fetchPosts } = useFetchPosts();
   const successRef = useRef();
 
   const handlePromptChange = (e) => {
@@ -61,7 +59,6 @@ const CreateForm = ({ initialPrompt, initialTagsString, postId, isEdit }) => {
         });
       }
       if (response.ok) {
-        await fetchPosts();
         router.push("/");
       } else {
         throw new Error(data.error || "Something went wrong");
