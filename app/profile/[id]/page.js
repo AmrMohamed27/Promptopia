@@ -1,4 +1,4 @@
-import { fetchUser, fetchPosts } from "@utils/fetch";
+import { fetchUser, fetchPosts } from "@utils/api/fetch";
 import ProfilePage from "@components/profile/ProfilePage";
 import { getServerSession } from "next-auth";
 import { options } from "@app/api/auth/[...nextauth]/options";

@@ -1,6 +1,6 @@
 import PromptCard from "@components/posts/PromptCard";
 import CommentCard from "@components/comments/CommentCard";
-import { fetchPostById } from "@utils/fetch";
+import { fetchPostById } from "@utils/api/fetch";
 import CommentForm from "@components/comments/CommentForm";
 import PostPage from "@components/posts/PostPage";
 

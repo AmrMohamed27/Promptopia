@@ -1,6 +1,6 @@
 import Feed from "@components/posts/Feed";
 import Hero from "@components/home/Hero";
-import { fetchPosts } from "@utils/fetch";
+import { fetchPosts } from "@utils/api/fetch";
 
 const Home = async () => {
   const posts = await fetchPosts();

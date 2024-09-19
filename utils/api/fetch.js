@@ -1,3 +1,4 @@
+// Get all posts
 export async function fetchPosts() {
   const res = await fetch(`${process.env.ORIGIN_URL}/api/posts`, {
     cache: "no-store",
@@ -9,7 +10,7 @@ export async function fetchPosts() {
   const posts = await res.json();
   return posts.reverse();
 }
-
+// Get user by id
 export async function fetchUser(id) {
   try {
     const response = await fetch(`${process.env.ORIGIN_URL}/api/user/${id}`, {
@@ -25,7 +26,7 @@ export async function fetchUser(id) {
     console.log(error);
   }
 }
-
+// Get post by id
 export async function fetchPostById(id) {
   const res = await fetch(`${process.env.ORIGIN_URL}/api/posts/${id}`, {
     cache: "no-store",
@@ -37,3 +38,31 @@ export async function fetchPostById(id) {
   const post = await res.json();
   return post;
 }
+// Delete post by id
+export const deletePost = async (postId) => {
+  const response = await fetch("/api/posts/delete", {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ postId }),
+  });
+  if (!response.ok) {
+    throw new Error(response.error || "Something went wrong");
+  }
+  return response;
+};
+// Add user by id to upvoters of post
+export const upvotePost = async (postId, userId, method) => {
+  const response = await fetch(`/api/posts/upvote`, {
+    method: method,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ userId, postId }),
+  });
+  if (!response.ok) {
+    throw new Error(response.error || "Something went wrong");
+  }
+  return response;
+};
