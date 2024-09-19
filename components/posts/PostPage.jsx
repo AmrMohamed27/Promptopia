@@ -7,6 +7,7 @@ import { useState } from "react";
 
 const PostPage = ({ initialPost }) => {
   const [post, setPost] = useState(initialPost);
+  console.log(post);
   return (
     <div className="flex flex-col w-full mt-4 gap-16">
       {initialPost && <PromptCard post={post} setPost={setPost} />}

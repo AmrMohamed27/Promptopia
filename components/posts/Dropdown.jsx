@@ -1,13 +1,9 @@
+"use client";
 import { useState } from "react";
 import {
   FaArrowDown as ArrowDown,
   FaArrowUp as ArrowUp,
 } from "react-icons/fa6";
-import { IoMdTime } from "react-icons/io";
-import { IoBookOutline } from "react-icons/io5";
-import { BiUpvote } from "react-icons/bi";
-import { FaRegCommentAlt } from "react-icons/fa";
-import { TbArrowsSort } from "react-icons/tb";
 
 const Dropdown = ({
   options,
@@ -37,7 +33,6 @@ const Dropdown = ({
         )}
       </div>
 
-        
       {/* Dropdown Menu */}
       {isOpen && (
         <ul className="absolute mt-2 w-full bg-white dark:bg-black border border-black/30 dark:border-white/30 rounded-lg shadow-lg">

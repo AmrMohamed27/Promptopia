@@ -12,6 +12,7 @@ import { BiSolidUpvote as SolidUpvoteIcon } from "react-icons/bi";
 import { GoLinkExternal as PostIcon } from "react-icons/go";
 import Button from "../common/Button";
 import Modal from "../common/Modal";
+import { formatTimeAgo } from "@utils/date";
 
 const PromptCard = ({
   post,
@@ -151,15 +152,14 @@ const PromptCard = ({
 
   return (
     <div
-      className={`${post?.prompt.length > 300 ? "basis-full flex-grow" : "flex-grow basis-1/4"} max-md:w-full flex flex-col border-2 border-black/10 dark:border-white/30 rounded-lg p-4 gap-4 shadow-lg shadow-transparent hover:shadow-primary-orange/20 hover:border-primary-orange/35 transition-all duration-500 relative`}
+      className={`${post?.prompt.length > 300 ? "basis-full flex-grow" : "flex-grow basis-1/3"} max-md:w-full flex flex-col border-2 border-black/10 dark:border-white/30 rounded-lg p-4 gap-4 shadow-lg shadow-transparent hover:shadow-primary-orange/20 hover:border-primary-orange/35 transition-all duration-500 relative`}
       key={post._id}
     >
       {/* Copy Icon */}
       <div className="absolute top-6 right-4 group">
-        <PostIcon
-          className="text-base text-primary-orange cursor-pointer"
-          onClick={() => router.push(`/posts/${post._id}`)}
-        />
+        <Link href={`/posts/${post._id}`}>
+          <PostIcon className="text-base text-primary-orange cursor-pointer" />
+        </Link>
         <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 hidden group-hover:block transition-opacity duration-400 ease-out bg-primary-orange text-white text-xs rounded py-1 px-2 text-nowrap">
           Go To Post
         </span>
@@ -178,12 +178,18 @@ const PromptCard = ({
           />
         </Link>
         <div className="flex flex-col flex-wrap w-full">
-          <Link
-            href={`/profile/${post.creator?._id}`}
-            className="text-lg font-bold capitalize text-pretty"
-          >
-            {post.creator?.username || "Anonymous"}
-          </Link>
+          <div className="flex flex-row gap-x-3 items-center">
+            <Link
+              href={`/profile/${post.creator?._id}`}
+              className="text-lg font-bold capitalize text-pretty"
+            >
+              {post.creator?.username || "Anonymous"}
+            </Link>
+            <span className="font-bold mb-1">|</span>
+            <span className="text-black/50 dark:text-white/50">
+              {formatTimeAgo(post.createdAt)}
+            </span>
+          </div>
           <div className="relative group">
             <p
               className="text-md text-black/60 dark:text-white/40 italic underline cursor-pointer"

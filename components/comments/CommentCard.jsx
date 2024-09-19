@@ -7,6 +7,7 @@ import { formatTimeAgo } from "@utils/date";
 import { useSession } from "next-auth/react";
 import { MdDeleteOutline as DeleteIcon } from "react-icons/md";
 import Modal from "../common/Modal";
+import Link from "next/link";
 
 const CommentCard = ({ comment: initialComment, post, setPost }) => {
   const [comment, setComment] = useState(initialComment);
@@ -14,8 +15,6 @@ const CommentCard = ({ comment: initialComment, post, setPost }) => {
   const postId = post._id;
 
   const { data: session } = useSession();
-  // const [upvotesLength, setUpvotesLength] = useState(upvotes?.length || 0);
-  // const [hasUpvoted, setHasUpvoted] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
   const handleUpvote = async (method) => {
@@ -54,17 +53,6 @@ const CommentCard = ({ comment: initialComment, post, setPost }) => {
       if (!response.ok) {
         throw new Error(response.error || "Something went wrong");
       }
-      // if (
-      //   (method === "PUT" &&
-      //     updatedComment.upvotes.includes(session?.user?.id)) ||
-      //   (method === "DELETE" &&
-      //     !updatedComment.upvotes.includes(session?.user?.id))
-      // ) {
-      //   setUpvotesLength((prev) => (method === "PUT" ? prev + 1 : prev - 1));
-      //   setHasUpvoted(!hasUpvoted);
-      // } else {
-      //   alert("An error has occurred");
-      // }
     } catch (error) {
       console.log(error);
     }
@@ -101,21 +89,25 @@ const CommentCard = ({ comment: initialComment, post, setPost }) => {
   return (
     <div className="flex flex-col gap-4 border-2 border-black/10 dark:border-white/30 rounded-lg p-4 relative">
       <>
-        <div className="flex flex-row gap-8 items-center">
+        <div className="flex flex-row gap-4 items-center">
           <div className="rounded-full">
-            <Image
-              src={creator.image}
-              alt={creator.username}
-              width={50}
-              height={50}
-              className="rounded-full"
-            />
+            <Link href={`/profile/${creator._id}`}>
+              <Image
+                src={creator.image}
+                alt={creator.username}
+                width={50}
+                height={50}
+                className="rounded-full"
+              />
+            </Link>
           </div>
-          <div className="flex flex-row gap-4 items-center">
-            <span className="font=bold capitalize text-lg">
+          <div className="flex flex-col items-start">
+            <Link
+              href={`/profile/${creator._id}`}
+              className="font-bold capitalize text-lg"
+            >
               {creator.username}
-            </span>
-            <span>|</span>
+            </Link>
             <span className="text-black/50 dark:text-white/50">
               {formatTimeAgo(createdAt)}
             </span>
