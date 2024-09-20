@@ -3,7 +3,6 @@ import mongoose from "mongoose";
 const connection = { isConnected: 0 }; // track connection status
 
 export const dbConnect = async () => {
-  console.log(mongoose.connection.models);
   if (connection.isConnected) {
     console.log("MongoDB is Already Connected");
     return;

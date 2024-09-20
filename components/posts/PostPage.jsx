@@ -1,16 +1,24 @@
 "use client";
 
-import CommentForm from "@components/comments/CommentForm";
+import CommentForm from "@components/forms/CommentForm";
 import PromptCard from "./PromptCard";
 import CommentCard from "@components/comments/CommentCard";
 import { useState } from "react";
 
-const PostPage = ({ initialPost }) => {
+const PostPage = ({ initialPost, initialPosts }) => {
   const [post, setPost] = useState(initialPost);
+  const [filteredPosts, setFilteredPosts] = useState(initialPosts);
   console.log(post);
   return (
     <div className="flex flex-col w-full mt-4 gap-16">
-      {initialPost && <PromptCard post={post} setPost={setPost} />}
+      {initialPost && (
+        <PromptCard
+          post={post}
+          setPost={setPost}
+          filteredPosts={filteredPosts}
+          setFilteredPosts={setFilteredPosts}
+        />
+      )}
       <CommentForm post={post} setPost={setPost} />
       <div className="flex flex-col gap-8">
         {post?.comments && post.comments != [] ? (

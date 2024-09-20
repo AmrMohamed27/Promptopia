@@ -53,9 +53,6 @@ const PromptCard = ({
   }, [deletePosts, upvotePosts, posts, setFilteredPosts]);
 
   // Handlers
-  const handleEdit = (postId) => {
-    router.push(`/posts/edit/${postId}`);
-  };
   const handleCopy = async (text) => {
     try {
       await navigator.clipboard.writeText(text);
@@ -67,7 +64,7 @@ const PromptCard = ({
 
   return (
     <div
-      className={`${post?.prompt.length > 300 ? "basis-full flex-grow" : "flex-grow basis-1/3"} max-md:w-full flex flex-col border-2 border-black/10 dark:border-white/30 rounded-lg p-4 gap-4 shadow-lg shadow-transparent hover:shadow-primary-orange/20 hover:border-primary-orange/35 transition-all duration-500 relative`}
+      className={`${post?.prompt.length > 300 ? "basis-full flex-grow" : "flex-grow basis-[48%] flex-shrink"} max-md:w-full flex flex-col border-2 border-black/10 dark:border-white/30 rounded-lg p-4 gap-4 shadow-lg shadow-transparent hover:shadow-primary-orange/20 hover:border-primary-orange/35 transition-all duration-500 relative`}
       key={post._id}
     >
       {/* Go To Post Icon */}
@@ -80,36 +77,38 @@ const PromptCard = ({
         </span>
       </div>
       {/* Creator Section */}
-      <div className="flex justify-start flex-row gap-4 flex-nowrap lg:flex-wrap xl:flex-nowrap">
+      <div className="flex justify-start flex-row gap-4 flex-nowrap ">
         {/* Creator Image */}
         <Link
           href={`/profile/${post.creator?._id}`}
-          className="flex items-center justify-center w-[60px] h-[60px]"
+          // className="flex items-center justify-center w-[60px] h-[60px] rounded-full"
         >
           <Image
             src={post.creator?.image}
             alt={post.creator?.username || "Unknown User"}
-            width={60}
-            height={60}
-            className="rounded-full"
+            width={50}
+            height={50}
+            className="rounded-full w-full h-full"
           />
         </Link>
         {/* Creator Info and Post Date */}
         <div className="flex flex-col flex-wrap w-full">
-          <div className="flex flex-row gap-x-3 items-center">
+          <div className="flex flex-col lg:flex-row gap-x-3 lg:items-center">
             <Link
               href={`/profile/${post.creator?._id}`}
               className="text-lg font-bold capitalize text-pretty"
             >
               {post.creator?.username || "Anonymous"}
             </Link>
-            <span className="font-bold mb-1">|</span>
-            <span className="text-black/50 dark:text-white/50">
-              {formatTimeAgo(post.createdAt)}
-            </span>
+            <div className="flex gap-x-3 items-center">
+              <span className="font-bold mb-1 hidden lg:block">|</span>
+              <span className="text-black/50 dark:text-white/50">
+                {formatTimeAgo(post.createdAt)}
+              </span>
+            </div>
           </div>
           {/* Creator Email */}
-          <div className="relative group">
+          <div className="relative group hidden lg:block">
             <p
               className="text-md text-black/60 dark:text-white/40 italic underline cursor-pointer"
               onClick={() => handleCopy(post.creator?.email)}
@@ -164,10 +163,9 @@ const PromptCard = ({
               </div>
               {/* Edit Post Button */}
               <div className="relative group">
-                <EditIcon
-                  className="text-base text-primary-orange cursor-pointer"
-                  onClick={() => handleEdit(post._id)}
-                />
+                <Link href={`/posts/edit/${post._id}`}>
+                  <EditIcon className="text-base text-primary-orange cursor-pointer" />
+                </Link>
                 <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 hidden group-hover:block transition-opacity duration-400 ease-out bg-primary-orange text-white text-xs rounded py-1 px-2">
                   Edit
                 </span>

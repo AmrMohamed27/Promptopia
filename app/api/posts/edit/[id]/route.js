@@ -6,10 +6,15 @@ export const PUT = async (req, { params }) => {
   try {
     const id = params.id;
     await dbConnect();
-    const post = await Post.findByIdAndUpdate(id, { prompt, tags }).populate(
-      "creator",
-      "username email image"
-    );
+    const post = await Post.findByIdAndUpdate(id, { prompt, tags })
+      .populate("creator", "username email image")
+      .populate({
+        path: "comments", // Populate the comments
+        populate: {
+          path: "creator", // Also populate the creator of the comment
+          select: "username email image",
+        },
+      });
     await post.save();
     return new Response(JSON.stringify(post), {
       status: 200,

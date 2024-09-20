@@ -10,6 +10,18 @@ export async function fetchPosts() {
   const posts = await res.json();
   return posts.reverse();
 }
+// Get All Posts on Client Side
+export async function fetchClientPosts() {
+  const res = await fetch(`/api/posts`, {
+    cache: "no-store",
+    method: "GET",
+  });
+  if (!res.ok) {
+    throw new Error("Failed to fetch posts");
+  }
+  const posts = await res.json();
+  return posts.reverse();
+}
 // Get user by id
 export async function fetchUser(id) {
   try {
@@ -65,4 +77,54 @@ export const upvotePost = async (postId, userId, method) => {
     throw new Error(response.error || "Something went wrong");
   }
   return response;
+};
+// Create Post
+export const createPost = async (prompt, tagsString, userId) => {
+  const tags = tagsString.split(", ");
+  try {
+    const body = JSON.stringify({
+      prompt,
+      tags,
+      userId,
+    });
+    const response = await fetch("/api/posts/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body,
+    });
+
+    if (response.ok) {
+      return response;
+    } else {
+      throw new Error(data.error || "Something went wrong");
+    }
+  } catch (error) {
+    console.log("Error creating or editing post: " + error.message);
+  }
+};
+// Edit Post
+export const editPost = async (prompt, tagsString, postId) => {
+  const tags = tagsString.split(", ");
+  try {
+    const body = JSON.stringify({
+      prompt,
+      tags,
+    });
+    const response = await fetch(`/api/posts/edit/${postId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body,
+    });
+    if (response.ok) {
+      return response;
+    } else {
+      throw new Error(data.error || "Something went wrong");
+    }
+  } catch (error) {
+    console.log("Error creating or editing post: " + error.message);
+  }
 };

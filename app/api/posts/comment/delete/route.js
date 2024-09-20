@@ -8,7 +8,15 @@ export const DELETE = async (req) => {
     await dbConnect();
     const post = await Post.findByIdAndUpdate(postId, {
       $pull: { comments: { _id: commentId } },
-    });
+    })
+      .populate("creator", "username email image")
+      .populate({
+        path: "comments", // Populate the comments
+        populate: {
+          path: "creator", // Also populate the creator of the comment
+          select: "username email image",
+        },
+      });
     return new Response(post, {
       status: 200,
     });
