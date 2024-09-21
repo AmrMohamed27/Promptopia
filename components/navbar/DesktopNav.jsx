@@ -33,7 +33,6 @@ const DesktopNav = () => {
   ) : (
     <div className="flex items-center gap-4">
       <ProvidersButtons />
-      <DarkModeIcon className={"text-4xl"} />
     </div>
   );
 };

@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { IoMdArrowDropright as ArrowRight } from "react-icons/io";
 import { IoMdArrowDropleft as ArrowLeft } from "react-icons/io";
 import Button from "../common/Button";
@@ -12,10 +12,7 @@ import useDarkMode from "@hooks/useDarkMode";
 const ProfileMenu = ({ mobile }) => {
   // Profile Dropdown
   const [profileIsOpen, setProfileIsOpen] = useState(false);
-  const toggleProfile = () => {
-    setProfileIsOpen((prev) => !prev);
-  };
-
+  const mobileMenuRef = useRef(null); // Create a ref for the mobile menu
   // Mobile menu
   const [mobileMenu, setMobileMenu] = useState(false);
   const toggleMobileMenu = () => {
@@ -27,6 +24,32 @@ const ProfileMenu = ({ mobile }) => {
 
   // Session
   const { data: session, status } = useSession();
+
+  const toggleProfile = () => {
+    setProfileIsOpen((prev) => !prev);
+  };
+
+  // Close mobile menu when the user clicks outside of it
+  useEffect(() => {
+    // Function to close the menu when clicking outside of it
+    const handleClickOutside = (event) => {
+      if (
+        mobileMenu &&
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(event.target)
+      ) {
+        setMobileMenu(false);
+      }
+    };
+
+    // Add event listener to document
+    document.addEventListener("click", handleClickOutside);
+
+    // Cleanup function to remove event listener
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [mobileMenu]);
 
   return !mobile ? (
     <>
@@ -81,6 +104,7 @@ const ProfileMenu = ({ mobile }) => {
             onClick={toggleMobileMenu}
           />
           <ul
+            ref={mobileMenuRef}
             className={`absolute top-12 -left-32 w-[10rem] bg-white dark:bg-black border-2 border-transparent dark:border-white/50 shadow-lg p-4 z-50 ${mobileMenu ? "flex" : "hidden"} flex-col items-end gap-8 font-semibold text-sm`}
           >
             <li className="flex flex-col gap-4 items-center justify-center w-full">
