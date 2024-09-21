@@ -1,14 +1,10 @@
 import { fetchUser, fetchPosts } from "@utils/api/fetch";
 import ProfilePage from "@components/profile/ProfilePage";
-import { getServerSession } from "next-auth";
-import { options } from "@app/api/auth/[...nextauth]/options";
 
 const Page = async ({ params }) => {
   const id = params.id;
   const user = await fetchUser(id);
   const posts = await fetchPosts();
-  const session = await getServerSession(options);
-  const { signedInUser } = session;
   return (
     <section className="w-full min-h-screen mb-12">
       {user === undefined ? (

@@ -6,6 +6,9 @@ import Image from "next/image";
 const ProfilePage = ({ user, posts }) => {
   const { data: session } = useSession();
   const isMyProfile = session?.user?.id === user._id;
+  const filteredPosts = posts.filter(
+    (post) => post.creator.email === user.email
+  );
 
   return (
     <>
@@ -32,7 +35,7 @@ const ProfilePage = ({ user, posts }) => {
         <h2 className="text-2xl md:text-3xl text-pale-blue dark:text-white font-bold text-center">
           {isMyProfile ? "Your" : `${user.username}'s`} Prompts:
         </h2>
-        {user.email && <Feed userEmail={user.email} posts={posts} />}
+        <Feed posts={filteredPosts} />
       </div>
     </>
   );

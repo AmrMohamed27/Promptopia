@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import LoadingCircle from "@components/common/LoadingCircle";
 
-const Home = async () => {
+const Home = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const searchParams = useSearchParams();

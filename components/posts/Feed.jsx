@@ -6,27 +6,28 @@ import Button from "../common/Button";
 import { sortOptions } from "@utils/constants";
 import Dropdown from "./Dropdown";
 
-export default function Feed({ userEmail, posts }) {
+export default function Feed({ posts }) {
   const [feedPage, setFeedPage] = useState(0);
   const [searchValue, setSearchValue] = useState("");
   const [filteredPosts, setFilteredPosts] = useState(posts);
   const [sortBy, setSortBy] = useState(null);
 
   // Filter posts for a user
-  useEffect(() => {
-    if (userEmail) {
-      setFilteredPosts(
-        posts?.filter((post) => post.creator?.email === userEmail)
-      );
-    } else {
-      setFilteredPosts(posts);
-    }
-    return () => {
-      setFilteredPosts(posts); // Reset posts on component unmount (e.g., navigating away)
-      setFeedPage(0); // Reset page to 0 on unmount
-    };
-  }, [userEmail, posts]);
-
+  // useEffect(() => {
+  //   console.log("Filtering by userEmail:", userEmail);
+  //   if (userEmail) {
+  //     const userPosts = posts.filter((post) => {
+  //       console.log("Post Creator:", post.creator?.email);
+  //       return post.creator?.email === userEmail;
+  //     });
+  //     console.log("Filtered Posts:", userPosts);
+  //     setFilteredPosts(userPosts);
+  //   } else {
+  //     setFilteredPosts(posts);
+  //   }
+  //   setFeedPage(0);
+  // }, [userEmail, posts]);
+  // Sort Posts
   useEffect(() => {
     const sortPosts = (posts, defaultPosts, selectedOption) => {
       if (!selectedOption) return defaultPosts;
