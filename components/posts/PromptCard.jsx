@@ -81,14 +81,14 @@ const PromptCard = ({
         {/* Creator Image */}
         <Link
           href={`/profile/${post.creator?._id}`}
-          // className="flex items-center justify-center w-[60px] h-[60px] rounded-full"
+          className="flex items-center justify-center rounded-full aspect-square"
         >
           <Image
             src={post.creator?.image}
             alt={post.creator?.username || "Unknown User"}
             width={50}
             height={50}
-            className="rounded-full w-full h-full"
+            className="rounded-full aspect-square"
           />
         </Link>
         {/* Creator Info and Post Date */}
@@ -98,7 +98,8 @@ const PromptCard = ({
               href={`/profile/${post.creator?._id}`}
               className="text-lg font-bold capitalize text-pretty"
             >
-              {post.creator?.username || "Anonymous"}
+              {`${post.creator?.username.slice(0, 18)}${post.creator?.username.length > 17 ? "..." : ""}` ||
+                "Anonymous"}
             </Link>
             <div className="flex gap-x-3 items-center">
               <span className="font-bold mb-1 hidden lg:block">|</span>
