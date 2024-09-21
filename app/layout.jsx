@@ -3,7 +3,6 @@ import Navbar from "@components/navbar/Navbar";
 import Footer from "@components/common/Footer";
 import Background from "@components/common/Background";
 import { Providers } from "./providers";
-import { Analytics } from "@vercel/analytics/react";
 
 export const metadata = {
   title: "Promptopia",
@@ -24,7 +23,6 @@ export default function RootLayout({ children }) {
             <Footer />
           </main>
         </Providers>
-        <Analytics />
       </body>
     </html>
   );
