@@ -54,4 +54,4 @@ Promptopia is a user-driven platform for sharing and discovering creative prompt
 
 ## Deployment
 
-The app is deployed on Vercel. You can view the live version at [https://promptopia-nine-omega.vercel.app/](here).
+The app is deployed on Vercel. You can view the live version [here](https://promptopia-nine-omega.vercel.app/).
